@@ -10,7 +10,8 @@ const devConfig = merge([
     }), 
     parts.define({
         'process.env': {
-            'ENV': JSON.stringify(ENV)
+            'ENV': JSON.stringify(ENV),
+            'WEBSOCKET_URL': JSON.stringify('ws://localhost:8081/ws-weightsim')
         }
     }),
     parts.loadCSS({

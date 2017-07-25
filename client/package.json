@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --watch config/webpack.dev.js --watch config/webpack.common.js --watch config/webpack.parts.js --exec \"webpack-dev-server --config config/webpack.dev.js --open\"",
     "build": "webpack --config config/webpack.prod.js",
-    "serve": "lite-server -c=bs-config.json",
+    "serve": "WEBSOCKET_URL='ws://localhost:8081/ws-weightsim' lite-server -c=bs-config.json",
     "test": "karma start karma.webpack.conf.js",
     "test:once": "karma start karma.conf.js --single-run",
     "ng": "ng",
@@ -71,7 +71,6 @@
     "@angular/common": "~4.2.0",
     "@angular/compiler": "~4.2.0",
     "@angular/compiler-cli": "~4.2.0",
-    "lite-server": "^2.2.2",
     "@angular/core": "~4.2.0",
     "@angular/forms": "~4.2.0",
     "@angular/http": "~4.2.0",
@@ -81,9 +80,13 @@
     "@angular/router": "~4.2.0",
     "@angular/tsc-wrapped": "~4.2.0",
     "@angular/upgrade": "~4.2.0",
+    "@types/stompjs": "2.3.0",
     "angular-in-memory-web-api": "~0.3.2",
+    "angular2-logger": "0.6.0",
     "core-js": "^2.4.1",
+    "lite-server": "^2.2.2",
     "rxjs": "^5.1.0",
+    "stompjs": "2.3.3",
     "systemjs": "0.19.39",
     "zone.js": "^0.8.4"
   }

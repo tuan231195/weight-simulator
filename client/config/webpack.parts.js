@@ -6,6 +6,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require('path');
 const PATHS = require('./dir.config');
 const helpers = require('./helpers');
 
@@ -18,31 +19,41 @@ exports.baseConfig = () => ({
     output: {
         path: PATHS.build,
         chunkFilename: '[name].[chunkhash:8].js',
-        filename: '[name].[chunkhash:8].js',
+        filename: '[name].[chunkhash:8].js'
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js'] // note if using webpack 1 you'd also need a '' in the array as well
+        extensions: ['.ts', '.tsx', '.js'], // note if using webpack 1 you'd also need a '' in the array as well,
+        alias: {
+            stompjs$: helpers.root('src', 'typings','stompjs.js')
+        }
     }, plugins: [
         new webpack.ContextReplacementPlugin(
             // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular([\\\/])core([\\\/])@angular/,
             helpers.root('./src'), // location of your src
             {} // a map of your routes
-        ),
+        )
     ]
 });
 
 exports.devServer = ({host, port} = {}) => ({
     devServer: {
-        publicPath: "/",
+        publicPath: '/',
         historyApiFallback: true,
         stats: 'minimal',
         host, // Defaults to `localhost`
         port, // Defaults to 8080
         overlay: {
             errors: true,
-            warnings: true,
+            warnings: true
+        },
+        proxy: {
+            '/ws-weightsim': {
+                target: 'ws://localhost:8081/',
+                ws: true,
+                secure: false
+            }
         }
     }
 });
@@ -79,7 +90,7 @@ exports.loadJavaScript = ({include, exclude}) => ({
                     // It uses default OS directory by default. If you need
                     // something more custom, pass a path to it.
                     // I.e., { cacheDirectory: '<path>' }
-                    cacheDirectory: true,
+                    cacheDirectory: true
                 }
             }
         ]
@@ -103,7 +114,7 @@ exports.loadCSS = ({include, exclude, use} = {}) => ({
 exports.extractCSS = ({include, exclude, use}) => {
     // Output extracted CSS to a file
     const plugin = new ExtractTextPlugin({
-        filename: '[name].[contenthash:8].css',
+        filename: '[name].[contenthash:8].css'
     });
 
     return {
@@ -116,8 +127,8 @@ exports.extractCSS = ({include, exclude, use}) => {
 
                     use: plugin.extract({
                         use,
-                        fallback: 'style-loader',
-                    }),
+                        fallback: 'style-loader'
+                    })
                 }
             ]
         },
@@ -129,19 +140,19 @@ exports.autoprefix = () => ({
     loader: 'postcss-loader',
     options: {
         plugins: () => ([
-            require('autoprefixer')(),
-        ]),
+            require('autoprefixer')()
+        ])
     }
 });
 
 exports.purifyCSS = ({paths}) => ({
     plugins: [
-        new PurifyCSSPlugin({paths}),
+        new PurifyCSSPlugin({paths})
     ]
 });
 exports.define = (variables) => ({
     plugins: [
-        new webpack.DefinePlugin(variables),
+        new webpack.DefinePlugin(variables)
     ]
 });
 
@@ -157,8 +168,8 @@ exports.lintCSS = ({include, exclude}) => ({
                 loader: 'postcss-loader',
                 options: {
                     plugins: () => ([
-                        require('stylelint')(),
-                    ]),
+                        require('stylelint')()
+                    ])
                 }
             }
         ]
@@ -175,7 +186,7 @@ exports.loadImages = ({include, exclude, options, loader} = {}) => ({
 
                 use: {
                     loader,
-                    options,
+                    options
                 }
             }
         ]
@@ -193,7 +204,7 @@ exports.loadFonts = ({include, exclude, loader, options} = {}) => ({
 
                 use: {
                     loader,
-                    options,
+                    options
                 }
             }
         ]
@@ -201,27 +212,27 @@ exports.loadFonts = ({include, exclude, loader, options} = {}) => ({
 });
 
 exports.generateSourceMaps = ({type}) => ({
-    devtool: type,
+    devtool: type
 });
 
 exports.extractBundles = (bundles) => ({
     plugins: bundles.map((bundle) => (
         new webpack.optimize.CommonsChunkPlugin(bundle)
-    )),
+    ))
 });
 
 exports.clean = (path) => ({
     plugins: [
         new CleanWebpackPlugin([path], {
             root: process.cwd()
-        }),
+        })
     ]
 });
 
 
 exports.minifyJavaScript = () => ({
     plugins: [
-        new BabiliPlugin(),
+        new BabiliPlugin()
     ]
 });
 
@@ -230,8 +241,8 @@ exports.minifyCSS = ({options}) => ({
         new OptimizeCSSAssetsPlugin({
             cssProcessor: cssnano,
             cssProcessorOptions: options,
-            canPrint: false,
-        }),
+            canPrint: false
+        })
     ]
 });
 
@@ -239,7 +250,7 @@ exports.extractHTML = (templatePath) => ({
     plugins: [
         new HtmlWebpackHtml({
             template: templatePath
-        }),
+        })
     ]
 });
 
@@ -248,8 +259,7 @@ exports.loadTypeScript = () => ({
         rules: [
             {
                 test: /\.tsx?$/,
-                use: ['awesome-typescript-loader', 'angular2-template-loader'],
-                exclude: /node_modules/
+                use: ['awesome-typescript-loader', 'angular2-template-loader']
             }
         ]
     }
@@ -262,9 +272,10 @@ exports.lintTypeScript = () => ({
                 test: /\.tsx?$/,
                 enforce: 'pre',
                 loader: 'tslint-loader',
+                exclude: helpers.root('node_modules'),
                 options: {
                     emitErrors: false,
-                    failOnHint: true,
+                    failOnHint: true
                 }
             }
         ]
