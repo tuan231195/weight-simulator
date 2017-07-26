@@ -2,16 +2,26 @@ package itree.core.weightsim.model;
 
 public class SimState
 {
-    private PlateState[] plateStates;
+    private VehicleState[] vehicleStates;
     private double currentVehiclePosition;
 
-    public PlateState[] getPlateStates()
+    public VehicleState[] getVehicleStates()
     {
-        return plateStates;
+        return vehicleStates;
     }
 
     public double getCurrentVehiclePosition()
     {
         return currentVehiclePosition;
+    }
+
+    public void setVehicleStates(VehicleState[] vehicleStates)
+    {
+        this.vehicleStates = vehicleStates;
+    }
+
+    public void setCurrentVehiclePosition(double currentVehiclePosition)
+    {
+        this.currentVehiclePosition = currentVehiclePosition;
     }
 }

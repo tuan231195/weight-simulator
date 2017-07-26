@@ -12,16 +12,19 @@ import {
     MdIconModule,
     MdMenuModule,
     MdSelectModule,
+    MdInputModule,
     MdTabsModule,
     MdToolbarModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
     imports: [
         BrowserModule, MdToolbarModule, MdSelectModule,
         FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule,
-        MdIconModule, MdMenuModule, MdButtonModule
+        MdIconModule, MdMenuModule, MdButtonModule, MdInputModule,
+        HttpModule
     ],
     declarations: [
         AppComponent, SettingsComponent, HomeComponent

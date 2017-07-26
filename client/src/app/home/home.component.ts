@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Plate} from '../model/plate';
+import {Http} from '@angular/http';
+import {Subscription} from 'rxjs/Subscription';
 
 
 @Component({
@@ -7,14 +9,16 @@ import {Plate} from '../model/plate';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy{
+
     selectedPlate: number;
     selected: boolean = false;
     selectedVehicle: number;
     isRunning: boolean = false;
     plates: Plate[];
+    plateSubscription: Subscription;
 
-    constructor() {
+    constructor(private http:Http) {
         this.plates = [
             {plateNum: 1, scaleActive: true, scaleJoin: false, weight: 4.5, port: 2002},
             {plateNum: 2, scaleActive: false, scaleJoin: true, weight: 5, port: 2003},
@@ -22,6 +26,17 @@ export class HomeComponent {
             {plateNum: 4, scaleActive: true, scaleJoin: true, weight: 2.5, port: 2005}
         ];
     }
+
+    ngOnInit(): void {
+        this.plateSubscription = this.http.get('/api/plates').subscribe((e) => {
+            console.log(e);
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.plateSubscription.unsubscribe();
+    }
+
 
     select() {
         setTimeout(() => {

@@ -1,13 +1,15 @@
 package itree.core.weightsim.jpa.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(schema = "SHARED", name = "VR_VEHICLE_TYPE")
-public class VehicleType
+public class VehicleType implements Serializable
 {
     @Id
     @Column(name = "VEHICLE_TYPE_CODE")
@@ -116,5 +118,27 @@ public class VehicleType
     public void setWeightInstructions(Set<WeightInstruction> weightInstructions)
     {
         this.weightInstructions = weightInstructions;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "VehicleType{" +
+                "code='" + code + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", catCode='" + catCode + '\'' +
+                ", bitmapName='" + bitmapName + '\'' +
+                ", gross=" + gross +
+                ", axleGroupMass1=" + axleGroupMass1 +
+                ", axleGroupMass2=" + axleGroupMass2 +
+                ", axleGroupMass3=" + axleGroupMass3 +
+                ", axleGroupMass4=" + axleGroupMass4 +
+                ", axleGroupMass5=" + axleGroupMass5 +
+                ", grpMassTol1=" + grpMassTol1 +
+                ", grpMassTol2=" + grpMassTol2 +
+                ", grpMassTol3=" + grpMassTol3 +
+                ", grpMassTol4=" + grpMassTol4 +
+                ", grpMassTol5=" + grpMassTol5 +
+                '}';
     }
 }

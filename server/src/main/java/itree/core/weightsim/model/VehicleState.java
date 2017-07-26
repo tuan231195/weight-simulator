@@ -1,21 +1,22 @@
 package itree.core.weightsim.model;
 
-public class PlateState
+public class VehicleState
 {
-    private int plateNumber;
+    private int plate;
+    private int step;
     private int port;
     private double weight;
     private boolean scaleActive;
     private boolean scaleJoin;
 
-    public int getPlateNumber()
+    public int getPlate()
     {
-        return plateNumber;
+        return plate;
     }
 
-    public void setPlateNumber(int plateNumber)
+    public void setPlate(int plate)
     {
-        this.plateNumber = plateNumber;
+        this.plate = plate;
     }
 
     public int getPort()
@@ -56,5 +57,15 @@ public class PlateState
     public void setScaleJoin(boolean scaleJoin)
     {
         this.scaleJoin = scaleJoin;
+    }
+
+    public int getStep()
+    {
+        return step;
+    }
+
+    public void setStep(int step)
+    {
+        this.step = step;
     }
 }

@@ -3,6 +3,7 @@ package itree.core.weightsim.service;
 import itree.core.weightsim.model.SimConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ public class LogService
     private boolean logInit;
     private SimConfig simConfig;
 
+    @Autowired
     public LogService(SimConfig simConfig)
     {
         //create one print writer for each thread

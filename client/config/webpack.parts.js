@@ -47,6 +47,11 @@ exports.devServer = ({host, port} = {}) => ({
         overlay: {
             errors: true,
             warnings: true
+        },
+        proxy: {
+            '/api/**': 'localhost:8081/',
+            secure: false,
+            changeOrigin: true
         }
     }
 });

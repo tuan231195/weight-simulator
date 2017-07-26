@@ -1,6 +1,8 @@
 package itree.core.weightsim.jpa.dao;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.SQLException;
 
 public class BaseDao
@@ -72,5 +74,62 @@ public class BaseDao
             throw new SQLException(e);
         }
         throw new SQLException(exception);
+    }
+
+    /**
+     * Perform a safe conversion from the column data type to int
+     * @param obj: the value to be converted
+     * @return the int value
+     */
+    protected Integer toInt(Object obj) throws SQLException
+    {
+        Integer result = null;
+        if (obj instanceof Integer)
+        {
+            result = (Integer) obj;
+        }
+        else if (obj instanceof Long)
+        {
+            result = ((Long) obj).intValue();
+        }
+        else if (obj instanceof BigDecimal)
+        {
+            result = ((BigDecimal) obj).intValue();
+        }
+        else if (obj instanceof BigInteger)
+        {
+            result = ((BigInteger)obj).intValue();
+        }
+        else if (obj != null)
+        {
+            throw new SQLException("Unknown return type " + obj.getClass());
+        }
+        return result;
+    }
+
+    protected Long toLong(Object obj) throws SQLException
+    {
+        Long result = null;
+        if (obj instanceof Integer)
+        {
+            result = ((Integer) obj).longValue();
+        }
+        else if (obj instanceof Long)
+        {
+            result = (Long)obj;
+        }
+        else if (obj instanceof BigDecimal)
+        {
+            result = ((BigDecimal) obj).longValue();
+        }
+        else if (obj instanceof BigInteger)
+        {
+            result = ((BigInteger)obj).longValue();
+        }
+        else if (obj != null)
+        {
+            throw new SQLException("Unknown return type " + obj.getClass());
+        }
+        return result;
     }
 }

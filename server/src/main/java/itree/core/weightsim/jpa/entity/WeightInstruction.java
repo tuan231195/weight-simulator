@@ -1,5 +1,8 @@
 package itree.core.weightsim.jpa.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -50,134 +53,10 @@ public class WeightInstruction implements Serializable
     @JoinColumn(name = "CODE", referencedColumnName = "VEHICLE_TYPE_CODE", updatable = false, insertable = false)
     private VehicleType vehicleType;
 
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode(String code)
-    {
-        this.code = code;
-    }
-
-    public Integer getPlateNum()
-    {
-        return plateNum;
-    }
-
-    public void setPlateNum(Integer plateNum)
-    {
-        this.plateNum = plateNum;
-    }
-
-    public Integer getStep()
-    {
-        return step;
-    }
-
-    public void setStep(Integer step)
-    {
-        this.step = step;
-    }
-
-    public Character getScale1Active()
-    {
-        return scale1Active;
-    }
-
-    public void setScale1Active(Character scale1Active)
-    {
-        this.scale1Active = scale1Active;
-    }
-
-    public Character getScale2Active()
-    {
-        return scale2Active;
-    }
-
-    public void setScale2Active(Character scale2Active)
-    {
-        this.scale2Active = scale2Active;
-    }
-
-    public Character getScale3Active()
-    {
-        return scale3Active;
-    }
-
-    public void setScale3Active(Character scale3Active)
-    {
-        this.scale3Active = scale3Active;
-    }
-
-    public Character getScale4Active()
-    {
-        return scale4Active;
-    }
-
-    public void setScale4Active(Character scale4Active)
-    {
-        this.scale4Active = scale4Active;
-    }
-
-    public Character getScale5Active()
-    {
-        return scale5Active;
-    }
-
-    public void setScale5Active(Character scale5Active)
-    {
-        this.scale5Active = scale5Active;
-    }
-
-    public Character getScaleJoin12()
-    {
-        return scaleJoin12;
-    }
-
-    public void setScaleJoin12(Character scaleJoin12)
-    {
-        this.scaleJoin12 = scaleJoin12;
-    }
-
-    public Character getScaleJoin23()
-    {
-        return scaleJoin23;
-    }
-
-    public void setScaleJoin23(Character scaleJoin23)
-    {
-        this.scaleJoin23 = scaleJoin23;
-    }
-
-    public Character getScaleJoin34()
-    {
-        return scaleJoin34;
-    }
-
-    public void setScaleJoin34(Character scaleJoin34)
-    {
-        this.scaleJoin34 = scaleJoin34;
-    }
-
-    public Character getScaleJoin45()
-    {
-        return scaleJoin45;
-    }
-
-    public void setScaleJoin45(Character scaleJoin45)
-    {
-        this.scaleJoin45 = scaleJoin45;
-    }
-
+    @JsonIgnore
     public VehicleType getVehicleType()
     {
         return vehicleType;
-    }
-
-    public void setVehicleType(VehicleType vehicleType)
-    {
-        this.vehicleType = vehicleType;
     }
 
     @Override

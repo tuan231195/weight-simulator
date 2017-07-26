@@ -5,7 +5,7 @@
         <class>itree.core.weightsim.jpa.entity.WeightInstruction</class>
         <properties>
 
-            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.show_sql" value="false" />
 
             <!-- Read only be default -->
             <property name="javax.persistence.jdbc.user" value="truckscan"/>
