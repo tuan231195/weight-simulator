@@ -4,6 +4,9 @@ import '@angular/core';
 import '@angular/common';
 import '@angular/http';
 import '@angular/router';
+<<<<<<< HEAD
 import 'stompjs';
+=======
 import 'stompjs/lib/stomp.js';
+>>>>>>> f97c9881615f376186a100166bb0b2a2dc364a59
 import 'angular2-logger/core';

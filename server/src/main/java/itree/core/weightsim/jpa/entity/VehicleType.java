@@ -3,9 +3,10 @@ package itree.core.weightsim.jpa.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "VR_VEHICLE_TYPE")
+@Table(schema = "SHARED", name = "VR_VEHICLE_TYPE")
 public class VehicleType
 {
     @Id
@@ -21,45 +22,41 @@ public class VehicleType
     @Column(name = "BITMAP_NAME")
     private String bitmapName;
 
-    @Column(name = "gross")
-    private long gross;
+    @Column(name = "GROSS")
+    private Double gross;
 
     @Column(name = "AXLEGROUP_MASS_1")
-    private long axleGroupMass1;
+    private Long axleGroupMass1;
 
     @Column(name = "AXLEGROUP_MASS_2")
-    private long axleGroupMass2;
+    private Long axleGroupMass2;
 
     @Column(name = "AXLEGROUP_MASS_3")
-    private long axleGroupMass3;
+    private Long axleGroupMass3;
 
     @Column(name = "AXLEGROUP_MASS_4")
-    private long axleGroupMass4;
+    private Long axleGroupMass4;
 
     @Column(name = "AXLEGROUP_MASS_5")
-    private long axleGroupMass5;
-
+    private Long axleGroupMass5;
 
     @Column(name = "GRP_MASS_TOL_1")
-    private long grpMassTol1;
+    private Long grpMassTol1;
 
     @Column(name = "GRP_MASS_TOL_2")
-    private long grpMassTol2;
+    private Long grpMassTol2;
 
     @Column(name = "GRP_MASS_TOL_3")
-    private long grpMassTol3;
+    private Long grpMassTol3;
 
     @Column(name = "GRP_MASS_TOL_4")
-    private long grpMassTol4;
+    private Long grpMassTol4;
 
     @Column(name = "GRP_MASS_TOL_5")
-    private long grpMassTol5;
+    private Long grpMassTol5;
 
-
-    @OneToMany
-    @JoinColumn(name = "vehicle_type_code", referencedColumnName = "code")
-    private List<WeightInstruction> weightInstructions;
-
+    @OneToMany(mappedBy = "vehicleType")
+    private Set<WeightInstruction> weightInstructions;
 
     public String getCode()
     {
@@ -101,22 +98,22 @@ public class VehicleType
         this.bitmapName = bitmapName;
     }
 
-    public long getGross()
+    public Double getGross()
     {
         return gross;
     }
 
-    public void setGross(long gross)
+    public void setGross(Double gross)
     {
         this.gross = gross;
     }
 
-    public List<WeightInstruction> getWeightInstructions()
+    public Set<WeightInstruction> getWeightInstructions()
     {
         return weightInstructions;
     }
 
-    public void setWeightInstructions(List<WeightInstruction> weightInstructions)
+    public void setWeightInstructions(Set<WeightInstruction> weightInstructions)
     {
         this.weightInstructions = weightInstructions;
     }
