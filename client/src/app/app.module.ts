@@ -1,19 +1,30 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {routes} from './app.router';
 import {AppComponent} from './app.component';
-import {ServicesComponent} from './services/services.component';
-import {AboutComponent} from './about/about.component';
+import {SettingsComponent} from './settings/settings.component';
+import {HomeComponent} from './home/home.component';
 import {StompService} from './websocket.service';
 import {Logger} from 'angular2-logger/core';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+    MdButtonModule,
+    MdCardModule,
+    MdIconModule,
+    MdMenuModule,
+    MdSelectModule,
+    MdTabsModule,
+    MdToolbarModule
+} from '@angular/material';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     imports: [
-        BrowserModule, routes
+        BrowserModule, MdToolbarModule, MdSelectModule,
+        FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule,
+        MdIconModule, MdMenuModule, MdButtonModule
     ],
     declarations: [
-        AppComponent, AboutComponent, ServicesComponent
+        AppComponent, SettingsComponent, HomeComponent
     ],
     providers: [StompService, Logger],
     bootstrap: [AppComponent]

@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<main>
+    <div class = "row">
+        <span class = "pl-3"></span>
+        <md-select id = "plate" [disabled] = "selected" placeholder="Plate Configuration" [(ngModel)]="selectedPlate" name="plate">
+            <md-option [value]="4">
+                Mick Plate
+            </md-option>
+            <md-option [value]="2">
+                Test Plate
+            </md-option>
+        </md-select>
+        <button [disabled] = "!selectedPlate" class = "ml-2" md-raised-button color = "accent" *ngIf = "!selected" (click)="select()">Start</button>
+        <button class = "ml-2" md-raised-button color = "accent" *ngIf = "selected" (click)="unselect()">Stop</button>
+    </div>
+    <hr/>
+    <div class = "control" *ngIf="selected">
+        <div>
+            <div class = "row record">
+                <span class = "pl-3"></span>
+                <div class = "col-2 header">Plate</div>
+                <div class = "value col-2" *ngFor="let plate of plates">{{plate.plateNum}}</div>
+            </div>
+            <div class = "row record">
+                <span class = "pl-3"></span>
+                <div class = "col-2 header">Port</div>
+                <div class = "value col-2" *ngFor="let plate of plates">{{plate.port}}</div>
+            </div>
+            <div class = "row record">
+                <span class = "pl-3"></span>
+                <div class = "col-2 header">Active</div>
+                <div class = "value col-2" *ngFor="let plate of plates"><md-icon color = "{{getClass(plate.scaleActive)}}">{{getIcon(plate.scaleActive)}}</md-icon></div>
+            </div>
+            <div class = "row record">
+                <span class = "pl-3"></span>
+                <div class = "col-2 header">Scale Join</div>
+                <div class = "value col-2" *ngFor="let plate of plates"><md-icon color = "{{getClass(plate.scaleJoin)}}">{{getIcon(plate.scaleJoin)}}</md-icon></div>
+            </div>
+            <div class = "row record">
+                <span class = "pl-3"></span>
+                <div class = "col-2 header">Weight</div>
+                <div class = "value col-2" *ngFor="let plate of plates"><input type="text" class = "weight-value" name="lname" disabled [value] = "plate.weight"/></div>
+            </div>
+        </div>
+        <hr/>
+        <div class = "row pt-3">
+            <span class = "pl-3"></span>
+            <md-select [disabled] = "isRunning" placeholder="Vehicle Type" [(ngModel)]="selectedVehicle" name="vtype">
+                <md-option [value]="4">
+                    Vehicle 1
+                </md-option>
+                <md-option [value]="2">
+                    Vehicle 2
+                </md-option>
+            </md-select>
+        </div>
+        <div class = "row mt-3">
+            <span class = "pl-3"></span>
+            <button md-raised-button [disabled] = "!selectedVehicle" color = "accent" *ngIf = "!isRunning" (click)="run()">Run</button>
+            <button md-raised-button color = "accent" *ngIf = "isRunning" (click)="next()">Next</button>
+            <button class = "ml-2" md-raised-button color = "warn" *ngIf = "isRunning" (click)="stop()">Stop</button>
+        </div>
+    </div>
+
+
+</main>

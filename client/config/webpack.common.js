@@ -28,6 +28,7 @@ const commonConfig = merge([
 	}),
 	parts.loadTypeScript(),
 	parts.loadHTML(),
+	parts.loadSass(),
 
 	parts.extractBundles([
 		{

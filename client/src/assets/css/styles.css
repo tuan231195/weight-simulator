@@ -7,6 +7,18 @@ body {
     font-family: Roboto, sans-serif;
 }
 
+.mat-tab-header-pagination {
+    display:none!important;
+}
+
+
+main {
+    padding: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    display: block;
+}
+
 md-card {
     max-width: 80%;
     margin: 2em auto;

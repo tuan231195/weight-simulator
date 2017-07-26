@@ -1,3 +1,8 @@
-/**
- * Created by tuannguyen on 25/7/17.
- */
+export class Plate
+{
+    plateNum: number;
+    weight: number;
+    port: number;
+    scaleActive: boolean;
+    scaleJoin: boolean
+}
