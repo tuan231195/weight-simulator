@@ -7,3 +7,6 @@ import '@angular/router';
 import 'stompjs';
 import 'stompjs/lib/stomp.js';
 import 'angular2-logger/core';
+import '@angular/material';
+import '@angular/platform-browser/animations';
+import 'hammerjs';

@@ -22,10 +22,10 @@ export class StompService {
             this.stompClient.connect({login: '', passcode: ''}, (frame: Frame) => {
                 this.connected = true;
                 this.logger.debug('Successfully connected to websocket');
-                subscriber.next();
+                subscriber.next(true);
             }, (error: string) => {
                 this.logger.error('Failed to connect to websocket. Reason: ' + error);
-                subscriber.error();
+                subscriber.error(error);
             });
 
             return () => {
