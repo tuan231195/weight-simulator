@@ -5,3 +5,5 @@ node_modules
 client/dist
 target
 npm-debug.log
+logs/
+simulator.log

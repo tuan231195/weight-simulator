@@ -10,9 +10,9 @@ import {
     MdButtonModule,
     MdCardModule,
     MdIconModule,
-    MdMenuModule,
-    MdSelectModule,
     MdInputModule,
+    MdMenuModule,
+    MdSelectModule, MdSnackBarModule,
     MdTabsModule,
     MdToolbarModule
 } from '@angular/material';
@@ -24,7 +24,7 @@ import {HttpModule} from '@angular/http';
         BrowserModule, MdToolbarModule, MdSelectModule,
         FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule,
         MdIconModule, MdMenuModule, MdButtonModule, MdInputModule,
-        HttpModule
+        MdSnackBarModule, HttpModule
     ],
     declarations: [
         AppComponent, SettingsComponent, HomeComponent

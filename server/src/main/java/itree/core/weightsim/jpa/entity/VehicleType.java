@@ -1,26 +1,29 @@
 package itree.core.weightsim.jpa.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(schema = "SHARED", name = "VR_VEHICLE_TYPE")
+@Table(name = "VR_VEHICLE_TYPE")
 public class VehicleType implements Serializable
 {
+    @JsonProperty("code")
     @Id
     @Column(name = "VEHICLE_TYPE_CODE")
     private String code;
 
+    @JsonProperty("name")
     @Column(name = "VEHICLE_TYPE_NAME")
     private String typeName;
 
     @Column(name = "VEHICLE_CAT_CODE")
     private String catCode;
 
+    @JsonProperty("image")
     @Column(name = "BITMAP_NAME")
     private String bitmapName;
 

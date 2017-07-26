@@ -1,0 +1,8 @@
+:host /deep/ .field .mat-select-trigger {
+    width: 240px !important;
+    margin-bottom: 1.29688em;
+}
+
+.row {
+    margin: 10px 0;
+}

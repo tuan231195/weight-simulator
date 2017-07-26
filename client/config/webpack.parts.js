@@ -23,7 +23,7 @@ exports.baseConfig = () => ({
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js'], // note if using webpack 1 you'd also need a '' in the array as well,
+        extensions: ['.ts', '.tsx', '.js', '.css', '.scss'], // note if using webpack 1 you'd also need a '' in the array as well,
         alias: {
             stompjs$: helpers.root('src', 'typings','stompjs.js')
         }
@@ -49,9 +49,9 @@ exports.devServer = ({host, port} = {}) => ({
             warnings: true
         },
         proxy: {
-            '/api/**': 'localhost:8081/',
-            secure: false,
-            changeOrigin: true
+            '/api/':{
+            	target: 'http://localhost:8081'
+			}
         }
     }
 });

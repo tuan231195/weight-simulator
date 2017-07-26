@@ -1,13 +1,20 @@
 package itree.core.weightsim.model;
 
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlateConfig
 {
+    @JsonProperty("name")
     private String plateConfigName;
+
+    @JsonProperty("num")
     private int numPlates;
+
+    @JsonProperty("version")
     private int plateVersion;
+
+    @JsonProperty("port")
     private int startPort;
 
     public PlateConfig(String plateConfigName, int startPort, int numPlates, int plateVersion)

@@ -5,6 +5,7 @@
 
     <root level="WARN" additivity="false">
         <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
     </root>
 
     <logger name="itree" level="DEBUG" additivity="false">

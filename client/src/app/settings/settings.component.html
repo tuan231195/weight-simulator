@@ -1,0 +1,44 @@
+<main>
+    <div class="form">
+        <div class="row">
+            <div class="col-5">
+                <md-select class="field" placeholder="Tick Rate" [(ngModel)]="tickRate">
+                    <md-option [value]="1">1</md-option>
+                    <md-option [value]="2">2</md-option>
+                    <md-option [value]="5">5</md-option>
+                </md-select>
+            </div>
+            <div class="col-5">
+                <md-select class="field" placeholder="Steady Time" [(ngModel)]="steadyTime">
+                    <md-option [value]="5">5</md-option>
+                    <md-option [value]="10">10</md-option>
+                    <md-option [value]="20">20</md-option>
+                </md-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <md-input-container>
+                    <input mdInput placeholder="Host name" value="localhost">
+                </md-input-container>
+            </div>
+            <div class="col-5">
+                <md-input-container>
+                    <input mdInput type="number" placeholder="Ramp Packets" maxlength="2" value="15">
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <md-input-container>
+                    <input mdInput type="number" placeholder="Start Port" maxlength="5" value="2002">
+                </md-input-container>
+            </div>
+            <div class="col-5">
+                <md-input-container>
+                    <input mdInput type="number" placeholder="Init Packets" maxlength="1" value="4">
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+</main>

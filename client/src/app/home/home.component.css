@@ -1,6 +1,11 @@
-:host /deep/ .mat-select-trigger {
+:host /deep/ .plate-config .mat-select-trigger {
     width: 240px!important;
 }
+
+:host /deep/ .vtypes .mat-select-trigger {
+    width: 400px!important;
+}
+
 
 div.header {
     padding:0;
@@ -8,7 +13,7 @@ div.header {
 }
 
 .record {
-    height: 40px;
+    height: 50px;
 }
 
 .value {

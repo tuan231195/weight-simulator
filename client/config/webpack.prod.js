@@ -37,8 +37,7 @@ const prodConfig = merge([
         }
     }),
     parts.minifyJavaScript(),
-    parts.ignoreErrors(),
-    parts.purifyCSS({paths: glob.sync(`${PATHS.src}/**/*.js`, {nodir: true})})
+    parts.ignoreErrors()
 ]);
 
 module.exports = merge([commonConfig, prodConfig]);
