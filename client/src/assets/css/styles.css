@@ -1,16 +1,12 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~bootstrap/dist/css/bootstrap.css';
+@import '~ng2-toastr/bundles/ng2-toastr.min.css';
 
 body {
     margin: 0;
     font-family: Roboto, sans-serif;
 }
-
-.mat-tab-header-pagination {
-    display:none!important;
-}
-
 
 main {
     padding: 1em;

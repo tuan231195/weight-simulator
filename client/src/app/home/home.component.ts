@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {Plate} from '../model/plate';
 import {Http} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
@@ -7,6 +7,7 @@ import {Logger} from 'angular2-logger/core';
 import {MdSnackBar} from '@angular/material';
 import 'rxjs/add/operator/map';
 import {VehicleType} from '../model/vehicle-type';
+import {ToastsManager} from 'ng2-toastr';
 
 
 @Component({
@@ -26,13 +27,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     plateSubscription: Subscription;
     vehicleSubscription: Subscription;
 
-    constructor(private http: Http, private logger: Logger, private snackbar: MdSnackBar) {
+    constructor(private http: Http, private logger: Logger, private snackbar: MdSnackBar, private toastr: ToastsManager, private vcr: ViewContainerRef) {
         this.plates = [
             {plateNum: 1, scaleActive: true, scaleJoin: false, weight: 4.5, port: 2002},
             {plateNum: 2, scaleActive: false, scaleJoin: true, weight: 5, port: 2003},
             {plateNum: 3, scaleActive: true, scaleJoin: false, weight: 6, port: 2004},
             {plateNum: 4, scaleActive: true, scaleJoin: true, weight: 2.5, port: 2005}
         ];
+        this.toastr.setRootViewContainerRef(vcr);
     }
 
     ngOnInit(): void {
@@ -40,9 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.plateConfigs = data;
         }, (e) => {
             const msg = 'Failed to get plate configurations';
-            this.snackbar.open(msg, null, {
-                duration: 2000
-            });
+            this.toastr.error( msg,'Error', {toastLife: 4000});
             this.logger.error(msg, e);
         });
     }
@@ -64,9 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.vehicleTypes = data;
             }, (e) => {
                 const msg = 'Failed to get vehicle types for selected plate';
-                this.snackbar.open(msg, null, {
-                    duration: 2000
-                });
+                this.toastr.error(msg, 'Error', {toastLife: 4000});
                 this.logger.error(msg, e);
             });
 

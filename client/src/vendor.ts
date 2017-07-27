@@ -10,3 +10,4 @@ import 'angular2-logger/core';
 import '@angular/material';
 import '@angular/platform-browser/animations';
 import 'hammerjs';
+import 'ng2-toastr/ng2-toastr';

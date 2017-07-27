@@ -18,13 +18,14 @@ import {
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 @NgModule({
     imports: [
         BrowserModule, MdToolbarModule, MdSelectModule,
         FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule,
         MdIconModule, MdMenuModule, MdButtonModule, MdInputModule,
-        MdSnackBarModule, HttpModule
+        MdSnackBarModule, HttpModule, ToastModule.forRoot()
     ],
     declarations: [
         AppComponent, SettingsComponent, HomeComponent

@@ -1,7 +1,7 @@
 const commonConfig = require('./webpack.common');
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
-const glob = require('glob');
+const glob = require('globby');
 const PATHS = require('./dir.config');
 const webpack = require('webpack');
 const helpers = require("./helpers");
@@ -37,7 +37,7 @@ const prodConfig = merge([
         }
     }),
     parts.minifyJavaScript(),
-    parts.ignoreErrors()
+    parts.ignoreErrors(),
 ]);
 
 module.exports = merge([commonConfig, prodConfig]);

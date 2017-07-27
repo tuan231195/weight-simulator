@@ -9,22 +9,22 @@
 
             <!-- Read only be default -->
 
-            <!--&lt;!&ndash; ORACLE &ndash;&gt;-->
-            <!--<property name="javax.persistence.jdbc.user" value="truckscan"/>-->
-            <!--<property name="javax.persistence.jdbc.password" value="truckscan"/>-->
-            <!--<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>-->
-            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>-->
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@rms-ora11.itree.com.au:1521:VRTEST"/>-->
-            <!--<property name="hibernate.connection.url" value="jdbc:oracle:thin:@rms-ora11.itree.com.au:1521:VRTEST"/>-->
+            <!-- ORACLE -->
+            <property name="javax.persistence.jdbc.user" value="truckscan"/>
+            <property name="javax.persistence.jdbc.password" value="truckscan"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@rms-ora11.itree.com.au:1521:VRTEST"/>
+            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@rms-ora11.itree.com.au:1521:VRTEST"/>
 
-            <!-- MYSQL -->
+<!--            &lt;!&ndash; MYSQL &ndash;&gt;
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="dotuan2311"/>
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/VRTEST"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/VRTEST"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/VRTEST"/>-->
 
             <property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/>
             <property name="hibernate.c3p0.max_size" value="5"/>
