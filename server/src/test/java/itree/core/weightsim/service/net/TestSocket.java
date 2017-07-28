@@ -1,7 +1,8 @@
-package itree.core.weightsim.service;
+package itree.core.weightsim.service.net;
 
 
 import itree.core.weightsim.model.SimConfig;
+import itree.core.weightsim.service.common.LogService;
 import itree.core.weightsim.util.SocketWrapper;
 import org.junit.After;
 import org.junit.Before;
@@ -21,9 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestSocketClient
+public class TestSocket
 {
-    private SocketClient socketClient;
+    private Socket socket;
     @Mock
     private SimConfig simConfig;
 
@@ -31,10 +32,7 @@ public class TestSocketClient
     private LogService logService;
 
     @Mock
-    private SocketWrapper socket;
-
-    @Captor
-    private ArgumentCaptor<InetSocketAddress> socketCaptor;
+    private SocketWrapper socketWrapper;
 
     private static final String HOST_NAME = "example.org";
 
@@ -44,27 +42,23 @@ public class TestSocketClient
     {
         when(simConfig.getStartPort()).thenReturn(2002);
         when(simConfig.getHostName()).thenReturn(HOST_NAME);
-        socketClient = new SocketClient(1, simConfig, logService, socket);
+        socket = new Socket(1, simConfig, logService, socketWrapper);
     }
 
     @Test
     public void testSend() throws IOException
     {
-        socketClient.send(20.0);
-        verify(socket).connect(socketCaptor.capture());
-        InetSocketAddress inetSocketAddress = socketCaptor.getValue();
-        assertEquals(inetSocketAddress.getPort(), 2003);
-        assertEquals(inetSocketAddress.getHostName(), HOST_NAME);
-
-        verify(socket).send(anyString());
+        socket.send(20.0);
+        verify(socketWrapper).connect();
+        verify(socketWrapper).send(anyString());
     }
 
 
     @After
     public void cleanup() throws IOException
     {
-        socketClient.cleanup();
+        socket.cleanup();
         //should close
-        verify(socket).close();
+        verify(socketWrapper).close();
     }
 }

@@ -1,4 +1,4 @@
-package itree.core.weightsim.service;
+package itree.core.weightsim.service.common;
 
 import itree.core.weightsim.model.SimConfig;
 import org.slf4j.Logger;

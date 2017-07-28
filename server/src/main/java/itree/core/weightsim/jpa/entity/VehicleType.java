@@ -1,6 +1,7 @@
 package itree.core.weightsim.jpa.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -113,6 +114,7 @@ public class VehicleType implements Serializable
         this.gross = gross;
     }
 
+    @JsonIgnore
     public Set<WeightInstruction> getWeightInstructions()
     {
         return weightInstructions;

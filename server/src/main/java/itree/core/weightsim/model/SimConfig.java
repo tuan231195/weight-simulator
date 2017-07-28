@@ -13,8 +13,8 @@ public class SimConfig
     private int tickRates;
     @Value("${app.host-name}")
     private String hostName;
-    @Value("${app.ramp-packets}")
-    private int rampPackets;
+    @Value("${app.num-ramp-packets}")
+    private int numRamPackets;
     @Value("${app.num-init-packets}")
     private int numInitPackets;
     @Value("${app.start-port}")
@@ -23,6 +23,8 @@ public class SimConfig
     private boolean[] overweight;
     @Value("${app.num-ports}")
     private int numPorts;
+    @Value("${app.is-initiator}")
+    private boolean isInitiator;
 
     public int getStartPort()
     {
@@ -54,14 +56,14 @@ public class SimConfig
         this.hostName = hostName;
     }
 
-    public int getRampPackets()
+    public int getNumRamPackets()
     {
-        return rampPackets;
+        return numRamPackets;
     }
 
-    public void setRampPackets(int rampPackets)
+    public void setNumRamPackets(int numRamPackets)
     {
-        this.rampPackets = rampPackets;
+        this.numRamPackets = numRamPackets;
     }
 
     public int getNumInitPackets()
@@ -92,5 +94,15 @@ public class SimConfig
     public void setNumPorts(int numPorts)
     {
         this.numPorts = numPorts;
+    }
+
+    public boolean isInitiator()
+    {
+        return isInitiator;
+    }
+
+    public void setInitiator(boolean initiator)
+    {
+        isInitiator = initiator;
     }
 }

@@ -1,8 +1,9 @@
-package itree.core.weightsim.service;
+package itree.core.weightsim.service.sim;
 
 
 import itree.core.weightsim.jpa.entity.WeightConfig;
 import itree.core.weightsim.model.SimConfig;
+import itree.core.weightsim.service.sim.WeightCalculator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +18,12 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestWeightGenerator
+public class TestWeightCalculator
 {
     @Mock
     private SimConfig simConfig;
 
-    private WeightGenerator weightGenerator;
+    private WeightCalculator weightCalculator;
 
     private WeightConfig weightConfig;
 
@@ -32,7 +33,7 @@ public class TestWeightGenerator
     public void setup()
     {
         weightConfig = new WeightConfig(CODE, "Testing", 20.0, 2, 2, new Long[]{10L, 10L}, new Boolean[]{true, true}, new Boolean[]{false});
-        weightGenerator = new WeightGenerator(simConfig);
+        weightCalculator = new WeightCalculator(simConfig);
         when(simConfig.getOverweight()).thenReturn(new boolean[]{false, false});
     }
 
@@ -41,7 +42,7 @@ public class TestWeightGenerator
     {
         reset(simConfig);
         when(simConfig.getOverweight()).thenReturn(new boolean[]{true, false});
-        List<Double> weights = weightGenerator.getWeight(weightConfig);
+        List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertEquals(weights.get(0), 11.0);
         assertEquals(weights.get(1), 10.0);
     }
@@ -50,7 +51,7 @@ public class TestWeightGenerator
     public void testJoin()
     {
         weightConfig.setScaleJoin(new Boolean[]{true});
-        List<Double> weights = weightGenerator.getWeight(weightConfig);
+        List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertEquals(weights.get(0), 5.0);
         assertEquals(weights.get(1), 5.0);
     }
@@ -59,7 +60,7 @@ public class TestWeightGenerator
     public void testNotActive()
     {
         weightConfig.setScaleActive(new Boolean[]{true, false});
-        List<Double> weights = weightGenerator.getWeight(weightConfig);
+        List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertEquals(weights.get(0), 10.0);
         assertEquals(weights.get(1), 9.99);
     }
@@ -71,7 +72,7 @@ public class TestWeightGenerator
         weightConfig.setScaleJoin(new Boolean[]{true});
         reset(simConfig);
         when(simConfig.getOverweight()).thenReturn(new boolean[]{true, true});
-        List<Double> weights = weightGenerator.getWeight(weightConfig);
+        List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertTrue(Double.compare(weights.get(0), 5.5) == 0);
         assertTrue(Double.compare(weights.get(1), 10.989) == 0);
     }

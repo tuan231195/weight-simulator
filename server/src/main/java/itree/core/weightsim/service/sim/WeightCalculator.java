@@ -1,4 +1,4 @@
-package itree.core.weightsim.service;
+package itree.core.weightsim.service.sim;
 
 import itree.core.weightsim.jpa.entity.WeightConfig;
 import itree.core.weightsim.model.SimConfig;
@@ -10,57 +10,26 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class WeightGenerator
+public class WeightCalculator
 {
-    private static final double NOISE_RATE = 0.1;
     private static final double OVERWEIGHT_PERCENTAGE = 0.1;
     private static final double A_DOUBLE = 9.99;
+    private static final double NOISE_RATE = 0.1;
     private Random random = new Random();
 
     private final SimConfig simConfig;
 
     @Autowired
-    public WeightGenerator(SimConfig simConfig)
+    public WeightCalculator(SimConfig simConfig)
     {
         this.simConfig = simConfig;
     }
 
-    /**
-     * This method mutates the give value according to the specified stage:
-     * <ul>
-     * <li>0 - init stage: sending 0s</li>
-     * <li>1 - unstable stage</li>
-     * <li>2 - stable stage</li>
-     * <li>3 - unstable stage</li>
-     * </ul>
-     *
-     * @param stageNum: stage number
-     * @param value:    given weight
-     * @return the mutated weight
-     */
-    public double stage(int stageNum, double value, double delta)
+    public double mutate(double value, double delta)
     {
-        double noise;
-        boolean inc;
-        switch (stageNum)
-        {
-            case 0:
-                return 0;
-            case 1:
-                value += delta;
-                noise = delta * NOISE_RATE * random.nextDouble();
-                inc = random.nextInt(2) < 1;
-                return inc ? noise + value : value - noise;
-            case 2:
-                return value;
-            case 3:
-                value -= delta;
-                noise = delta * NOISE_RATE * random.nextDouble();
-                inc = random.nextInt(2) < 1;
-                return inc ? noise + value : value - noise;
-            default:
-                throw new IllegalArgumentException("Unsupported stage");
-        }
+        double noise = delta * NOISE_RATE * random.nextDouble();
+        boolean inc = random.nextInt(2) < 1;
+        return inc ? noise + value : value - noise;
     }
 
     public List<Double> getWeight(WeightConfig weightConfig)
