@@ -8,52 +8,20 @@ public class WeightConfig
     private Double gross;
     private Integer plateNum;
     private Integer step;
+    private Long[] scales;
+    private Boolean[] scaleActive;
+    private Boolean[] scaleJoin;
 
-    private Long scale1;
-    private Long scale2;
-    private Long scale3;
-    private Long scale4;
-    private Long scale5;
-
-    private Character scale1Active;
-
-    private Character scale2Active;
-
-    private Character scale3Active;
-
-    private Character scale4Active;
-
-    private Character scale5Active;
-
-    private Character scaleJoin12;
-
-    private Character scaleJoin23;
-
-    private Character scaleJoin34;
-
-    private Character scaleJoin45;
-
-    public WeightConfig(String code, String typeName, Double gross, Integer plateNum, Integer step, Long scale1, Long scale2, Long scale3, Long scale4, Long scale5, Character scale1Active, Character scale2Active, Character scale3Active, Character scale4Active, Character scale5Active, Character scaleJoin12, Character scaleJoin23, Character scaleJoin34, Character scaleJoin45)
+    public WeightConfig(String code, String typeName, Double gross, Integer plateNum, Integer step, Long[] scales, Boolean[] scaleActive, Boolean[] scaleJoin)
     {
         this.code = code;
         this.typeName = typeName;
         this.gross = gross;
         this.plateNum = plateNum;
         this.step = step;
-        this.scale1 = scale1;
-        this.scale2 = scale2;
-        this.scale3 = scale3;
-        this.scale4 = scale4;
-        this.scale5 = scale5;
-        this.scale1Active = scale1Active;
-        this.scale2Active = scale2Active;
-        this.scale3Active = scale3Active;
-        this.scale4Active = scale4Active;
-        this.scale5Active = scale5Active;
-        this.scaleJoin12 = scaleJoin12;
-        this.scaleJoin23 = scaleJoin23;
-        this.scaleJoin34 = scaleJoin34;
-        this.scaleJoin45 = scaleJoin45;
+        this.scales = scales;
+        this.scaleActive = scaleActive;
+        this.scaleJoin = scaleJoin;
     }
 
     public String getCode()
@@ -81,99 +49,58 @@ public class WeightConfig
         return step;
     }
 
-    public Long getScale1()
+    public Long[] getScales()
     {
-        return scale1;
+        return scales;
     }
 
-    public Long getScale2()
+    public Boolean[] getScaleActive()
     {
-        return scale2;
+        return scaleActive;
     }
 
-    public Long getScale3()
+    public Boolean[] getScaleJoin()
     {
-        return scale3;
+        return scaleJoin;
     }
 
-    public Long getScale4()
+    public void setCode(String code)
     {
-        return scale4;
+        this.code = code;
     }
 
-    public Long getScale5()
+    public void setTypeName(String typeName)
     {
-        return scale5;
+        this.typeName = typeName;
     }
 
-    public Character getScale1Active()
+    public void setGross(Double gross)
     {
-        return scale1Active;
+        this.gross = gross;
     }
 
-    public Character getScale2Active()
+    public void setPlateNum(Integer plateNum)
     {
-        return scale2Active;
+        this.plateNum = plateNum;
     }
 
-    public Character getScale3Active()
+    public void setStep(Integer step)
     {
-        return scale3Active;
+        this.step = step;
     }
 
-    public Character getScale4Active()
+    public void setScales(Long[] scales)
     {
-        return scale4Active;
+        this.scales = scales;
     }
 
-    public Character getScale5Active()
+    public void setScaleActive(Boolean[] scaleActive)
     {
-        return scale5Active;
+        this.scaleActive = scaleActive;
     }
 
-    public Character getScaleJoin12()
+    public void setScaleJoin(Boolean[] scaleJoin)
     {
-        return scaleJoin12;
-    }
-
-    public Character getScaleJoin23()
-    {
-        return scaleJoin23;
-    }
-
-    public Character getScaleJoin34()
-    {
-        return scaleJoin34;
-    }
-
-    public Character getScaleJoin45()
-    {
-        return scaleJoin45;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "WeightConfig{" +
-                "code='" + code + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", gross=" + gross +
-                ", plateNum=" + plateNum +
-                ", step=" + step +
-                ", scale1=" + scale1 +
-                ", scale2=" + scale2 +
-                ", scale3=" + scale3 +
-                ", scale4=" + scale4 +
-                ", scale5=" + scale5 +
-                ", scale1Active=" + scale1Active +
-                ", scale2Active=" + scale2Active +
-                ", scale3Active=" + scale3Active +
-                ", scale4Active=" + scale4Active +
-                ", scale5Active=" + scale5Active +
-                ", scaleJoin12=" + scaleJoin12 +
-                ", scaleJoin23=" + scaleJoin23 +
-                ", scaleJoin34=" + scaleJoin34 +
-                ", scaleJoin45=" + scaleJoin45 +
-                '}';
+        this.scaleJoin = scaleJoin;
     }
 }

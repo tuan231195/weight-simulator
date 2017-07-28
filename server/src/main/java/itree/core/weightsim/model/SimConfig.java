@@ -2,16 +2,15 @@ package itree.core.weightsim.model;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:config.properties")
+@PropertySources({@PropertySource("classpath:config.properties"), @PropertySource(value = "${override-config-file}", ignoreResourceNotFound = true)})
 public class SimConfig
 {
     @Value("${app.tick-rate}")
-    private long tickRates;
-    @Value("${app.steady-time}")
-    private long steadyTime;
+    private int tickRates;
     @Value("${app.host-name}")
     private String hostName;
     @Value("${app.ramp-packets}")
@@ -20,8 +19,11 @@ public class SimConfig
     private int numInitPackets;
     @Value("${app.start-port}")
     private int startPort;
-    @Value("${app.num-threads}")
-    private int numThreads;
+    @Value("#{'${app.overweight}'.split(',')}")
+    private boolean[] overweight;
+    @Value("${app.num-ports}")
+    private int numPorts;
+
     public int getStartPort()
     {
         return startPort;
@@ -32,25 +34,14 @@ public class SimConfig
         this.startPort = startPort;
     }
 
-
-    public long getTickRates()
+    public int getTickRates()
     {
         return tickRates;
     }
 
-    public void setTickRates(long tickRates)
+    public void setTickRates(int tickRates)
     {
         this.tickRates = tickRates;
-    }
-
-    public long getSteadyTime()
-    {
-        return steadyTime;
-    }
-
-    public void setSteadyTime(long steadyTime)
-    {
-        this.steadyTime = steadyTime;
     }
 
     public String getHostName()
@@ -83,13 +74,23 @@ public class SimConfig
         this.numInitPackets = numInitPackets;
     }
 
-    public int getNumThreads()
+    public boolean[] getOverweight()
     {
-        return numThreads;
+        return overweight;
     }
 
-    public void setNumThreads(int numThreads)
+    public void setOverweight(boolean[] overweight)
     {
-        this.numThreads = numThreads;
+        this.overweight = overweight;
+    }
+
+    public int getNumPorts()
+    {
+        return numPorts;
+    }
+
+    public void setNumPorts(int numPorts)
+    {
+        this.numPorts = numPorts;
     }
 }

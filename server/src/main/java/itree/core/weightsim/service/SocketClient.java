@@ -1,79 +1,59 @@
 package itree.core.weightsim.service;
 
 import itree.core.weightsim.model.SimConfig;
+import itree.core.weightsim.util.SocketWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
-public class SocketClient
+class SocketClient
 {
     private SimConfig simConfig;
-    private double weight;
     private Logger logger = LoggerFactory.getLogger(SocketClient.class);
-    private Socket socket;
-    private PrintWriter printWriter;
     private int port;
     private int idx;
     private InetSocketAddress inetSocketAddress;
     private LogService logService;
+    private SocketWrapper socketWrapper;
 
-    public SocketClient(int idx, SimConfig simConfig, LogService logService)
+    SocketClient(int idx, SimConfig simConfig, LogService logService, SocketWrapper socketWrapper)
     {
         this.idx = idx;
         this.simConfig = simConfig;
         port = simConfig.getStartPort() + idx;
-        socket = new Socket();
         inetSocketAddress = new InetSocketAddress(simConfig.getHostName(), port);
         this.logService = logService;
+        this.socketWrapper = socketWrapper;
     }
 
-    public double getWeight()
-    {
-        return weight;
-    }
 
-    public void send()
+    void send(double weight)
     {
         String hostName = simConfig.getHostName();
         try
         {
-            //late initialized socket
-            if (!socket.isConnected())
-            {
-                logger.debug("Connecting to port: " + port);
-                socket.connect(inetSocketAddress);
-            }
-            printWriter = new PrintWriter(socket.getOutputStream());
+            socketWrapper.connect(inetSocketAddress);
             String message = "Test";
-            printWriter.print(message);
+            socketWrapper.send(message);
             logService.log(idx, message);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             logger.error("Failed to connect to " + hostName + " on port " + port, e);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             logger.error("Failed to send to server on port: " + port, e);
         }
     }
 
-    public void cleanup()
+    void cleanup()
     {
         logger.debug("Cleaning socket client at port " + port);
         try
         {
-            if (socket != null && socket.isConnected())
-            {
-                socket.getOutputStream().close();
-                socket.close();
-            }
-        }
-        catch (Exception e)
+            socketWrapper.close();
+        } catch (Exception e)
         {
             logger.error("Failed to close connection", e);
         }

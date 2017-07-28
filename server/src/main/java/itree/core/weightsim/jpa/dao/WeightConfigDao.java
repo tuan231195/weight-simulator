@@ -1,9 +1,8 @@
 package itree.core.weightsim.jpa.dao;
 
 
-import itree.core.weightsim.jpa.entity.VehicleType;
 import itree.core.weightsim.jpa.entity.WeightConfig;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class WeightConfigDao extends BaseDao
 {
     public List<WeightConfig> findAll(int plateNum, String code) throws SQLException
@@ -34,12 +34,10 @@ public class WeightConfigDao extends BaseDao
                     .setParameter("code", code).setParameter("plateNum", plateNum)
                     .getResultList();
             weightConfigList = toEntityList(result);
-        }
-        catch (RuntimeException e)
+        } catch (RuntimeException e)
         {
             handleException(e, transaction);
-        }
-        finally
+        } finally
         {
             close(entityManager);
         }
@@ -54,15 +52,28 @@ public class WeightConfigDao extends BaseDao
             if (obj instanceof Object[])
             {
                 Object[] tuple = (Object[]) obj;
+                int plateNum = toInt(tuple[3]);
+                Long[] scales = new Long[plateNum];
+                Boolean[] scaleActive = new Boolean[plateNum];
+                Boolean[] scaleJoin = new Boolean[plateNum - 1];
+
+                for (int i = 0; i < plateNum; i++)
+                {
+                    int startScaleIndex = 5;
+                    int startActiveIndex = 10;
+                    scales[i] = toLong(tuple[startScaleIndex + i]);
+                    scaleActive[i] = (Character) tuple[startActiveIndex + i] == 'Y';
+                }
+
+                for (int i = 0; i < plateNum - 1; i++)
+                {
+                    int startScaleJoinIndex = 15;
+                    scaleActive[i] = (Character) tuple[startScaleJoinIndex + i] == 'Y';
+                }
                 WeightConfig weightConfig =
                         new WeightConfig(
-                        (String) tuple[0], (String) tuple[1], (Double) tuple[2],
-                        toInt(tuple[3]), toInt(tuple[4]), toLong(tuple[5]),
-                        toLong(tuple[6]), toLong(tuple[7]), toLong(tuple[8]),
-                        toLong(tuple[9]), (Character) tuple[10], (Character) tuple[11],
-                        (Character) tuple[12], (Character) tuple[13], (Character) tuple[14],
-                        (Character) tuple[15], (Character) tuple[16], (Character) tuple[17],
-                        (Character) tuple[18]);
+                                (String) tuple[0], (String) tuple[1], (Double) tuple[2],
+                                plateNum, toInt(tuple[4]), scales, scaleActive, scaleJoin);
                 weightConfigList.add(weightConfig);
             }
         }

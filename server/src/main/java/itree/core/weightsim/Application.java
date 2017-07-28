@@ -17,6 +17,6 @@ public class Application {
 
     @Bean
     public ScheduledExecutorService scheduledExecutorService(SimConfig simConfig) {
-        return Executors.newScheduledThreadPool(simConfig.getNumThreads());
+        return Executors.newScheduledThreadPool(4);
     }
 }

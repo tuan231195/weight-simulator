@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
@@ -24,7 +23,7 @@ public class LogService
     public LogService(SimConfig simConfig)
     {
         //create one print writer for each thread
-        this.printWriters = new PrintWriter[simConfig.getNumThreads()];
+        this.printWriters = new PrintWriter[simConfig.getNumPorts()];
         this.simConfig = simConfig;
     }
 
@@ -42,14 +41,13 @@ public class LogService
                     logger.debug("Created log directory");
                 }
             }
-            for (int i = 0; i < simConfig.getNumThreads(); i++)
+            for (int i = 0; i < simConfig.getNumPorts(); i++)
             {
                 int port = simConfig.getStartPort();
                 printWriters[i] = new PrintWriter(new FileOutputStream(new File(logDirectory, "packets-" + port + ".log"), true));
             }
             logInit = true;
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             logger.debug("Failed to create log files", e);
         }
