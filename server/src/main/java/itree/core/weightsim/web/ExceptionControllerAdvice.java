@@ -26,11 +26,19 @@ public class ExceptionControllerAdvice
     @ExceptionHandler(PlateNotFoundException.class)
     public ResponseEntity<ErrorResponse> exceptionHandler(PlateNotFoundException ex)
     {
-        logger.error("Cannot find plate version: " + ex.getVersion(), ex);
         ErrorResponse error = new ErrorResponse();
         error.setErrorCode(HttpStatus.NOT_FOUND.value());
         error.setMessage(ex.getMessage());
 
+        return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SessionNotFoundException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(SessionNotFoundException ex)
+    {
+        ErrorResponse error = new ErrorResponse();
+        error.setErrorCode(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
         return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
     }
 }
