@@ -7,10 +7,7 @@ import itree.core.weightsim.model.GedgeStruct;
 import itree.core.weightsim.model.PlateConfig;
 import itree.core.weightsim.model.SimConfig;
 import itree.core.weightsim.service.net.SocketGroup;
-import itree.core.weightsim.service.sim.SimThread;
-import itree.core.weightsim.service.sim.WeightCalculator;
 import itree.core.weightsim.service.sim.stages.*;
-import itree.core.weightsim.util.TimerWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +19,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
@@ -57,6 +50,8 @@ public class TestSimThread
     @Mock
     private ScheduledExecutorService scheduledExecutorService;
 
+    @Mock
+    private SimService simService;
 
     private static final int STEPS = 2;
 
@@ -80,15 +75,15 @@ public class TestSimThread
         when(simConfig.getTickRates()).thenReturn(1);
         when(simConfig.getNumRamPackets()).thenReturn(1);
         when(weightConfigDao.findAll(2, CODE)).thenReturn(createWeightConfigList());
-        simThread = spy(new SimThread(plateConfig, CODE, simConfig, weightConfigDao, scheduledExecutorService));
+        simThread = spy(new SimThread(plateConfig, CODE, simService, simConfig, weightConfigDao, scheduledExecutorService));
         List<Stage> stages = new ArrayList<Stage>();
-        stage0 = spy(new Stage0(simThread, simConfig, socketGroup));
+        stage0 = spy(new Stage0(simThread, socketGroup));
         stages.add(stage0);
-        stage1 = spy(new Stage1(simThread, simConfig, socketGroup, weightCalculator));
+        stage1 = spy(new Stage1(simThread, socketGroup, weightCalculator));
         stages.add(stage1);
-        stage2 = spy(new Stage2(simThread, simConfig, socketGroup, weightCalculator));
+        stage2 = spy(new Stage2(simThread, socketGroup, weightCalculator));
         stages.add(stage2);
-        stage3 = spy(new Stage3(simThread, simConfig, socketGroup, weightCalculator));
+        stage3 = spy(new Stage3(simThread, socketGroup, weightCalculator));
         stages.add(stage3);
         simThread.setStages(stages);
     }
@@ -109,35 +104,35 @@ public class TestSimThread
         when(weightCalculator.getWeight(weightConfig2)).thenReturn(Arrays.asList(15.0, 20.0));
         simThread.run();
         assertTrue(simThread.isRunning());
-        verify(stage0).run(plateConfig, weightConfig1);
+        verify(stage0).run(weightConfig1);
         simThread.run();
-        verify(stage1).run(plateConfig, weightConfig1);
+        verify(stage1).run(weightConfig1);
         assertTrue(stage2.isStabled());
         simThread.run();
-        verify(stage2).run(plateConfig, weightConfig1);
+        verify(stage2).run(weightConfig1);
         simThread.nextStage();
         assertFalse(stage2.isStabled());
         simThread.run();
-        verify(stage3).run(plateConfig, weightConfig1);
+        verify(stage3).run(weightConfig1);
         reset(stage0);
 
         //step 2
         simThread.run();
-        verify(stage0).run(plateConfig, weightConfig2);
+        verify(stage0).run(weightConfig2);
         simThread.run();
-        verify(stage1).run(plateConfig, weightConfig2);
+        verify(stage1).run(weightConfig2);
         simThread.run();
-        verify(stage2).run(plateConfig, weightConfig2);
+        verify(stage2).run(weightConfig2);
         simThread.nextStage();
         simThread.run();
-        verify(stage3).run(plateConfig, weightConfig1);
+        verify(stage3).run(weightConfig1);
         assertFalse(simThread.isRunning());
     }
 
     @Test
     public void testStage0() throws InterruptedException
     {
-        stage0.run(plateConfig, weightConfig1);
+        stage0.run(weightConfig1);
         ArgumentCaptor<GedgeStruct> argumentCaptor = ArgumentCaptor.forClass(GedgeStruct.class);
         verify(socketGroup).send(eq(0), argumentCaptor.capture());
         assertEquals(argumentCaptor.getValue().getWeight(), "0000.00");
@@ -148,7 +143,7 @@ public class TestSimThread
     {
         when(weightCalculator.mutate(eq(5.0), anyDouble())).thenReturn(5.0);
         when(weightCalculator.getWeight(weightConfig1)).thenReturn(Arrays.asList(10.0, 10.0));
-        stage1.run(plateConfig, weightConfig1);
+        stage1.run(weightConfig1);
         verify(weightCalculator, times(2)).mutate(eq(5.0), eq(5.0));
         ArgumentCaptor<GedgeStruct> argumentCaptor = ArgumentCaptor.forClass(GedgeStruct.class);
         verify(socketGroup).send(eq(0), argumentCaptor.capture());
@@ -162,7 +157,7 @@ public class TestSimThread
     {
         when(weightCalculator.getWeight(weightConfig1)).thenReturn(Arrays.asList(15.0, 20.0));
         stage2.setStabled(true);
-        stage2.run(plateConfig, weightConfig1);
+        stage2.run(weightConfig1);
         ArgumentCaptor<GedgeStruct> argumentCaptor = ArgumentCaptor.forClass(GedgeStruct.class);
         verify(socketGroup).send(eq(0), argumentCaptor.capture());
         assertEquals(argumentCaptor.getValue().getWeight(), "0015.00");
@@ -176,7 +171,7 @@ public class TestSimThread
         when(weightCalculator.mutate(eq(6.0), anyDouble())).thenReturn(6.0);
         when(weightCalculator.mutate(eq(7.0), anyDouble())).thenReturn(7.0);
         when(weightCalculator.getWeight(weightConfig1)).thenReturn(Arrays.asList(12.0, 14.0));
-        stage3.run(plateConfig, weightConfig1);
+        stage3.run(weightConfig1);
         ArgumentCaptor<GedgeStruct> argumentCaptor = ArgumentCaptor.forClass(GedgeStruct.class);
         verify(weightCalculator).mutate(eq(6.0), eq(6.0));
         verify(weightCalculator).mutate(eq(7.0), eq(7.0));

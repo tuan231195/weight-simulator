@@ -1,14 +1,13 @@
 :host /deep/ .plate-config .mat-select-trigger {
-    width: 240px!important;
+    width: 240px !important;
 }
 
 :host /deep/ .vtypes .mat-select-trigger {
-    width: 400px!important;
+    width: 400px !important;
 }
 
-
 div.header {
-    padding:0;
+    padding: 5px 0 0;
     font-weight: 600;
 }
 
@@ -17,6 +16,7 @@ div.header {
 }
 
 .value {
+    padding: 0;
     text-align: center;
 }
 
@@ -28,6 +28,17 @@ input[disabled] {
 }
 
 .weight-value {
-    width: 45px;
+    width: 70px;
     padding: 5px;
+}
+
+.image-container {
+    background-color: #D7D7D7;
+    position: relative;
+    width: 1000px;
+    height: 68px;
+}
+
+.vehicle-image {
+    position: absolute;
 }

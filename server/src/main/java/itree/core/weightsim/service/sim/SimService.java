@@ -1,8 +1,10 @@
 package itree.core.weightsim.service.sim;
 
 import itree.core.weightsim.model.PlateConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import itree.core.weightsim.model.SimState;
+import itree.core.weightsim.util.LoggerWrapper;
+import itree.core.weightsim.util.LoggerWrapperFactory;
+import itree.core.weightsim.web.SessionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class SimService
     private ScheduledExecutorService executorService;
     private SimThreadFactory simThreadFactory;
     private Map<String, SimThread> simThreadMap;
-    private Logger logger = LoggerFactory.getLogger(SimService.class);
+    private LoggerWrapper logger = LoggerWrapperFactory.getLogger(SimService.class);
 
     @Autowired
     public SimService(ScheduledExecutorService executorService, SimThreadFactory simThreadFactory)
@@ -29,27 +31,36 @@ public class SimService
 
     public void simulate(String sessionId, PlateConfig plate, String vType) throws SQLException
     {
-        logger.debug("Simulating " + plate.getPlateConfigName() + ", " + vType + ". Session id: " + sessionId);
-        SimThread simThread = simThreadFactory.getSimThread(plate, vType);
+
+        logger.debug(String.format("Simulating %s, %s. Session id: %s", plate.getPlateConfigName(), vType, sessionId));
+        SimThread simThread = simThreadFactory.getSimThread(this, plate, vType);
         simThread.setSessionId(sessionId);
         executorService.execute(simThread);
         simThreadMap.put(sessionId, simThread);
     }
 
-    public void stop(String sessionId)
+    public void stop(String sessionId) throws SessionNotFoundException
     {
-        logger.debug("Stoping session id: " + sessionId);
+        logger.debug(String.format("Stoping session id: %s", sessionId));
         SimThread simThread = simThreadMap.get(sessionId);
         if (simThread != null)
         {
-            logger.debug("Plate config: " + simThread.getPlateConfig() + ", Code: " + simThread.getCode());
+            logger.debug(String.format("Plate config: %s, Code: %s", simThread.getPlateConfig(), simThread.getCode()));
             simThread.stop();
-            simThreadMap.remove(sessionId);
+        } else
+        {
+            throw new SessionNotFoundException(sessionId);
         }
     }
 
-    public void nextStep(String sessionId)
+    void removeSession(String sessionId)
     {
+        simThreadMap.remove(sessionId);
+    }
+
+    public void nextStep(String sessionId) throws SessionNotFoundException
+    {
+
         logger.debug("Increment step for session id" + sessionId);
         SimThread simThread = simThreadMap.get(sessionId);
         if (simThread != null)
@@ -57,6 +68,28 @@ public class SimService
             logger.debug("Plate config: " + simThread.getPlateConfig() + ", Code: " + simThread.getCode());
             logger.debug("Current Step: " + simThread.getCurrentStep());
             simThread.nextStep();
+        } else
+        {
+            throw new SessionNotFoundException(sessionId);
+        }
+    }
+
+    public SimState getState(String sessionId) throws SessionNotFoundException
+    {
+
+        logger.debug(String.format("Getting state for session id: %s", sessionId));
+        SimThread simThread = simThreadMap.get(sessionId);
+        if (simThread != null)
+        {
+            if (!simThread.isRunning())
+            {
+                removeSession(sessionId);
+            }
+            logger.debug(String.format("Plate config: %s, Code: %s", simThread.getPlateConfig(), simThread.getCode()));
+            return simThread.getState();
+        } else
+        {
+            throw new SessionNotFoundException(sessionId);
         }
     }
 }

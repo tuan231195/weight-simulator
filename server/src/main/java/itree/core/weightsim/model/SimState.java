@@ -4,6 +4,20 @@ public class SimState
 {
     private VehicleState[] vehicleStates;
     private double currentVehiclePosition;
+    private int plate;
+    private int step;
+    private int numSteps;
+    private int stage;
+
+    public int getStage()
+    {
+        return stage;
+    }
+
+    public void setStage(int stage)
+    {
+        this.stage = stage;
+    }
 
     public VehicleState[] getVehicleStates()
     {
@@ -23,5 +37,35 @@ public class SimState
     public void setCurrentVehiclePosition(double currentVehiclePosition)
     {
         this.currentVehiclePosition = currentVehiclePosition;
+    }
+
+    public int getPlate()
+    {
+        return plate;
+    }
+
+    public int getStep()
+    {
+        return step;
+    }
+
+    public void setStep(int step)
+    {
+        this.step = step;
+    }
+
+    public void setPlate(int plate)
+    {
+        this.plate = plate;
+    }
+
+    public int getNumSteps()
+    {
+        return numSteps;
+    }
+
+    public void setNumSteps(int numSteps)
+    {
+        this.numSteps = numSteps;
     }
 }

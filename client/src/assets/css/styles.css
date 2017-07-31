@@ -5,6 +5,7 @@
 
 body {
     margin: 0;
+    height: 100vh;
     font-family: Roboto, sans-serif;
 }
 
@@ -19,4 +20,8 @@ md-card {
     max-width: 80%;
     margin: 2em auto;
     text-align: center;
+}
+
+.mat-tab-header-pagination {
+    display:none!important;
 }

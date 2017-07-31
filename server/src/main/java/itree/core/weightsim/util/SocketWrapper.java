@@ -1,8 +1,5 @@
 package itree.core.weightsim.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -21,7 +18,7 @@ public class SocketWrapper
     private boolean isInitiator;
     private boolean isInitiated;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private Logger logger = LoggerFactory.getLogger(SocketWrapper.class);
+    private LoggerWrapper logger = LoggerWrapperFactory.getLogger(SocketWrapper.class);
 
     public SocketWrapper(boolean isInitiator, InetSocketAddress socketAddress)
     {
@@ -30,14 +27,12 @@ public class SocketWrapper
         if (isInitiator)
         {
             this.socket = new Socket();
-        }
-        else
+        } else
         {
             try
             {
                 this.serverSocket = new ServerSocket(socketAddress.getPort());
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 logger.error("Failed to initialize server socket", e);
             }
@@ -53,8 +48,7 @@ public class SocketWrapper
                 this.socket.connect(socketAddress);
                 this.printWriter = new PrintWriter(socket.getOutputStream(), true);
             }
-        }
-        else
+        } else
         {
             if (!isInitiated || (this.socket != null && this.socket.isClosed()))
             {
@@ -68,8 +62,7 @@ public class SocketWrapper
                         {
                             //listen for connection
                             socket = serverSocket.accept();
-                        }
-                        catch (IOException e)
+                        } catch (IOException e)
                         {
                             logger.error("Failed to initialize server socket", e);
                         }

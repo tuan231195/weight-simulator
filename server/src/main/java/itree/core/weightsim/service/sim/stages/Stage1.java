@@ -3,6 +3,7 @@ package itree.core.weightsim.service.sim.stages;
 import itree.core.weightsim.jpa.entity.WeightConfig;
 import itree.core.weightsim.model.PlateConfig;
 import itree.core.weightsim.model.SimConfig;
+import itree.core.weightsim.model.StageState;
 import itree.core.weightsim.service.net.SocketGroup;
 import itree.core.weightsim.service.sim.SimThread;
 import itree.core.weightsim.service.sim.WeightCalculator;
@@ -17,36 +18,56 @@ public class Stage1 implements Stage
     private int numSentPackets;
     private SocketGroup socketGroup;
     private WeightCalculator weightCalculator;
+    private double[] realValues;
+    private double[] values;
+    private PlateConfig plateConfig;
 
-    public Stage1(SimThread simThread, SimConfig simConfig, SocketGroup socketGroup, WeightCalculator weightCalculator)
+    public Stage1(SimThread simThread, SocketGroup socketGroup, WeightCalculator weightCalculator)
     {
         this.simThread = simThread;
-        this.simConfig = simConfig;
+        this.simConfig = simThread.getSimConfig();
         this.socketGroup = socketGroup;
         this.weightCalculator = weightCalculator;
+        this.plateConfig = simThread.getPlateConfig();
+        realValues = new double[plateConfig.getNumPlates()];
+        values = new double[plateConfig.getNumPlates()];
     }
 
     @Override
-    public void run(PlateConfig plateConfig, WeightConfig weightConfig) throws InterruptedException
+    public StageState run(WeightConfig weightConfig)
     {
-        double[] values = new double[plateConfig.getNumPlates()];
-        List<Double> realValues = weightCalculator.getWeight(weightConfig);
+        List<Double> computedValues = weightCalculator.getWeight(weightConfig);
         if (numSentPackets < simConfig.getNumRamPackets())
         {
-            for (int j = 0; j < plateConfig.getNumPlates(); j++)
+            for (int j = 0; j < this.plateConfig.getNumPlates(); j++)
             {
-                double delta = realValues.get(j) / (simConfig.getNumRamPackets() + 1);
-                values[j] += delta;
-                socketGroup.send(j, PacketBuilder.newGedgeStruct(false, weightCalculator.mutate(values[j], delta)));
+                double delta = computedValues.get(j) / (simConfig.getNumRamPackets() + 1);
+                this.realValues[j] += delta;
+                this.values[j] = weightCalculator.mutate(this.realValues[j], delta);
+                socketGroup.send(j, PacketBuilder.newGedgeStruct(false, this.values[j]));
             }
             numSentPackets++;
             if (numSentPackets == simConfig.getNumRamPackets())
             {
-                numSentPackets = 0;
                 simThread.nextStage();
+                reset();
             }
+        }
+        return new StageState(values, getCurrentVehicleOffset());
+    }
+
+    private void reset()
+    {
+        numSentPackets = 0;
+        for (int i = 0; i < plateConfig.getNumPlates(); i++)
+        {
+            values[i] = 0;
+            realValues[i] = 0;
         }
     }
 
-
+    private double getCurrentVehicleOffset()
+    {
+        return (numSentPackets * 1.0 / simConfig.getNumRamPackets()) / 3;
+    }
 }

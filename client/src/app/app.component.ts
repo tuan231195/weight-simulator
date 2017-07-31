@@ -1,30 +1,38 @@
-import {Component, OnDestroy} from '@angular/core';
-import {StompService} from './websocket.service';
+import {Component, HostListener, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
+import {Logger} from 'angular2-logger/core';
+import {Settings} from './model/settings';
+import {SettingService} from './services/settings.service';
+import {ToastsManager} from 'ng2-toastr';
 @Component({
     selector: 'vr-app',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements  OnInit {
+
+    private settingSubscription: Subscription;
+    settings: Settings;
+
+    @HostListener('window:beforeunload')
     ngOnDestroy(): void {
-        if (this.connectSubscription) {
-            this.connectSubscription.unsubscribe();
-        }
-        if (this.messageSubscription) {
-            this.messageSubscription.unsubscribe();
+        if (this.settingSubscription) {
+            this.settingSubscription.unsubscribe();
         }
     }
 
-    private connectSubscription: Subscription;
-    private messageSubscription: Subscription;
-
-    constructor(private stompService: StompService) {
-        this.connectSubscription = stompService.connect('ws://localhost:8081/ws-weightsim').subscribe(() => {
-            this.messageSubscription = stompService.listen('/topic/test').subscribe((value) => {
-                console.log(value);
-            });
-            stompService.send('/ws/state', 'test');
+    ngOnInit(): void {
+        this.settingSubscription = this.settingService.getAll().subscribe((response: Settings) => {
+            this.settings = response;
+            console.log(this.settings);
+        }, (e) => {
+            this.logger.error('Failed getting settings', e);
+            this.toastr.error('Failed to get application settings', 'Error');
         });
     }
+
+    constructor(private settingService: SettingService, private logger: Logger, private toastr: ToastsManager, private vcf: ViewContainerRef) {
+        this.toastr.setRootViewContainerRef(vcf);
+    }
+
 }

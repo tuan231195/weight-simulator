@@ -21,12 +21,11 @@ public class VehicleTypeDao extends BaseDao
         {
             transaction.begin();
             result = entityManager.createQuery("FROM VehicleType ve JOIN FETCH ve.weightInstructions", VehicleType.class).getResultList();
-        }
-        catch (RuntimeException e)
+            transaction.commit();
+        } catch (RuntimeException e)
         {
             handleException(e, transaction);
-        }
-        finally
+        } finally
         {
             close(entityManager);
         }
@@ -42,19 +41,17 @@ public class VehicleTypeDao extends BaseDao
         try
         {
             transaction.begin();
-            List<VehicleType> vehicleTypes =  entityManager.createQuery("FROM VehicleType  WHERE code = :code", VehicleType.class)
+            List<VehicleType> vehicleTypes = entityManager.createQuery("FROM VehicleType  WHERE code = :code", VehicleType.class)
                     .setParameter("code", typeCode).getResultList();
             if (vehicleTypes != null && vehicleTypes.isEmpty())
             {
                 result = vehicleTypes.get(0);
             }
             transaction.commit();
-        }
-        catch (RuntimeException e)
+        } catch (RuntimeException e)
         {
             handleException(e, transaction);
-        }
-        finally
+        } finally
         {
             close(entityManager);
         }
@@ -71,12 +68,11 @@ public class VehicleTypeDao extends BaseDao
         {
             transaction.begin();
             result = entityManager.createQuery("SELECT ve FROM VehicleType ve JOIN ve.weightInstructions vw WHERE vw.plateNum = :plateNum", VehicleType.class).setParameter("plateNum", plateNum).getResultList();
-        }
-        catch (RuntimeException e)
+            transaction.commit();
+        } catch (RuntimeException e)
         {
             handleException(e, transaction);
-        }
-        finally
+        } finally
         {
             close(entityManager);
         }

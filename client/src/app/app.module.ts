@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {SettingsComponent} from './settings/settings.component';
 import {HomeComponent} from './home/home.component';
-import {StompService} from './websocket.service';
 import {Logger} from 'angular2-logger/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -12,13 +11,16 @@ import {
     MdIconModule,
     MdInputModule,
     MdMenuModule,
-    MdSelectModule, MdSnackBarModule,
+    MdSelectModule,
+    MdSnackBarModule,
     MdTabsModule,
     MdToolbarModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {SettingService} from './services/settings.service';
+import {WeightService} from './services/weight.service';
 
 @NgModule({
     imports: [
@@ -30,7 +32,7 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
     declarations: [
         AppComponent, SettingsComponent, HomeComponent
     ],
-    providers: [StompService, Logger],
+    providers: [Logger, SettingService, WeightService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

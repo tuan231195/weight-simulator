@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Settings} from '../model/settings';
 
 
 @Component({
@@ -7,5 +8,6 @@ import {Component} from '@angular/core';
     styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
-
+    @Input()
+    settings: Settings;
 }

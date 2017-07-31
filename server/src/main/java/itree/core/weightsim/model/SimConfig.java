@@ -25,6 +25,8 @@ public class SimConfig
     private int numPorts;
     @Value("${app.is-initiator}")
     private boolean isInitiator;
+    @Value("${app.num-threads}")
+    private int numThreads;
 
     public int getStartPort()
     {
@@ -104,5 +106,15 @@ public class SimConfig
     public void setInitiator(boolean initiator)
     {
         isInitiator = initiator;
+    }
+
+    public int getNumThreads()
+    {
+        return numThreads;
+    }
+
+    public void setNumThreads(int numThreads)
+    {
+        this.numThreads = numThreads;
     }
 }

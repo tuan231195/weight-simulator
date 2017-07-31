@@ -62,6 +62,8 @@ public class WeightConfigDao extends BaseDao
                     int startScaleIndex = 5;
                     int startActiveIndex = 10;
                     scales[i] = toLong(tuple[startScaleIndex + i]);
+                    if (scales[i] == null)
+                        scales[i] = 0L;
                     scaleActive[i] = (Character) tuple[startActiveIndex + i] == 'Y';
                 }
 

@@ -3,17 +3,13 @@ package itree.core.weightsim.service.sim;
 import itree.core.weightsim.jpa.dao.WeightConfigDao;
 import itree.core.weightsim.model.PlateConfig;
 import itree.core.weightsim.model.SimConfig;
-import itree.core.weightsim.service.sim.SimThread;
 import itree.core.weightsim.service.net.SocketGroup;
-import itree.core.weightsim.service.sim.WeightCalculator;
 import itree.core.weightsim.service.sim.stages.*;
-import itree.core.weightsim.util.TimerWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Component
@@ -39,17 +35,17 @@ public class SimThreadFactory
         this.scheduledExecutorService = executorService;
     }
 
-    public SimThread getSimThread(PlateConfig plateConfig, String type)
+    public SimThread getSimThread(SimService simService, PlateConfig plateConfig, String type)
     {
-        SimThread simThread = new SimThread(plateConfig, type, simConfig, weightConfigDao, scheduledExecutorService);
+        SimThread simThread = new SimThread(plateConfig, type, simService, simConfig, weightConfigDao, scheduledExecutorService);
         List<Stage> stages = new ArrayList<Stage>();
-        Stage stage0 = new Stage0(simThread, simConfig, socketGroup);
+        Stage stage0 = new Stage0(simThread, socketGroup);
         stages.add(stage0);
-        Stage stage1 = new Stage1(simThread, simConfig, socketGroup, weightCalculator);
+        Stage stage1 = new Stage1(simThread, socketGroup, weightCalculator);
         stages.add(stage1);
-        Stage stage2 = new Stage2(simThread, simConfig, socketGroup, weightCalculator);
+        Stage stage2 = new Stage2(simThread, socketGroup, weightCalculator);
         stages.add(stage2);
-        Stage stage3 = new Stage3(simThread, simConfig, socketGroup, weightCalculator);
+        Stage stage3 = new Stage3(simThread, socketGroup, weightCalculator);
         stages.add(stage3);
         simThread.setStages(stages);
         return simThread;
