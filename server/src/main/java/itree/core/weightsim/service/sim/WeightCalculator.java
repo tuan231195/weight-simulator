@@ -58,8 +58,8 @@ public class WeightCalculator
 
         for (int i = 0; i < plateNum; i++)
         {
-            boolean[] overweightFlags = simConfig.getOverweight();
-            if (overweightFlags.length > i && overweightFlags[i])
+            Boolean[] overweightFlags = simConfig.getOverweight();
+            if (overweightFlags.length > i && overweightFlags[i] == Boolean.TRUE)
             {
                 weights.set(i, weights.get(i) * (1 + OVERWEIGHT_PERCENTAGE));
             }

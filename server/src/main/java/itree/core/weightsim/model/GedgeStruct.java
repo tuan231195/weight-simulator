@@ -27,15 +27,13 @@ public class GedgeStruct
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(begin).append(constS)
-                .append(constT).append(",")
-                .append(display).append(motion)
-                .append(",").append(sign_flag)
-                .append(weight).append(" ")
-                .append(unit).append(end);
 
-        return sb.toString();
+        return String.valueOf(begin) + constS +
+                constT + "," +
+                display + motion +
+                "," + sign_flag +
+                weight + " " +
+                unit + String.valueOf(end);
     }
 
     public String getWeight()

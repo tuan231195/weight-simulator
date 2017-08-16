@@ -1,4 +1,4 @@
-export class Plate
+export class VehicleState
 {
     plateNum: number;
     weight: number;

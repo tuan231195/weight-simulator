@@ -1,0 +1,4 @@
+<md-input-container>
+    <input mdInput oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+           type="number" [(ngModel)] = "value" placeholder="{{placeholder}}" [attr.maxlength]="maxlength">
+</md-input-container>

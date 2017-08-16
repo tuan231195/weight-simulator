@@ -1,0 +1,24 @@
+package itree.core.weightsim.util;
+
+<<<<<<< HEAD
+/**
+ * Created by tuannguyen on 28/7/17.
+ */
+public class LoggerWrapperFactory
+{
+=======
+import org.slf4j.LoggerFactory;
+
+public class LoggerWrapperFactory
+{
+    public static LoggerWrapper getLogger(Class<?> clazz)
+    {
+        return new LoggerWrapper(LoggerFactory.getLogger(clazz));
+    }
+
+    public static LoggerWrapper getLogger(String loggerName)
+    {
+        return new LoggerWrapper(LoggerFactory.getLogger(loggerName));
+    }
+>>>>>>> 2b44fbf9802360cda5f9fd81c1d914a796799bfc
+}

@@ -1,4 +1,4 @@
-package itree.core.weightsim.controllers;
+package itree.core.weightsim.web;
 
 public class PlateNotFoundException extends Exception
 {

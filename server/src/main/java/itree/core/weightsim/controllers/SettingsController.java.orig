@@ -1,0 +1,33 @@
+package itree.core.weightsim.controllers;
+
+<<<<<<< HEAD
+/**
+ * Created by tuannguyen on 28/7/17.
+ */
+public class SettingsController
+{
+=======
+
+import itree.core.weightsim.model.SimConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class SettingsController
+{
+    private final SimConfig simConfig;
+
+    @Autowired
+    public SettingsController(SimConfig simConfig)
+    {
+        this.simConfig = simConfig;
+    }
+
+    @RequestMapping("/api/settings")
+    public SimConfig getSimConfig()
+    {
+        return simConfig;
+    }
+>>>>>>> 2b44fbf9802360cda5f9fd81c1d914a796799bfc
+}

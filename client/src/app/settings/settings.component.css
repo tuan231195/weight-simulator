@@ -1,8 +1,11 @@
-:host /deep/ .field .mat-select-trigger {
-    width: 240px !important;
-    margin-bottom: 1.29688em;
-}
 
+
+:host /deep/ .mat-select-trigger {
+    margin-top: 20px;
+}
+:host /deep/ .mat-checkbox-label {
+    margin-right: 15px;
+}
 .row {
     margin: 10px 0;
 }

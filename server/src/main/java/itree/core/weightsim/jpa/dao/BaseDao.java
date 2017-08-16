@@ -78,6 +78,7 @@ public class BaseDao
 
     /**
      * Perform a safe conversion from the column data type to int
+     *
      * @param obj: the value to be converted
      * @return the int value
      */
@@ -98,7 +99,7 @@ public class BaseDao
         }
         else if (obj instanceof BigInteger)
         {
-            result = ((BigInteger)obj).intValue();
+            result = ((BigInteger) obj).intValue();
         }
         else if (obj != null)
         {
@@ -116,7 +117,7 @@ public class BaseDao
         }
         else if (obj instanceof Long)
         {
-            result = (Long)obj;
+            result = (Long) obj;
         }
         else if (obj instanceof BigDecimal)
         {
@@ -124,7 +125,7 @@ public class BaseDao
         }
         else if (obj instanceof BigInteger)
         {
-            result = ((BigInteger)obj).longValue();
+            result = ((BigInteger) obj).longValue();
         }
         else if (obj != null)
         {

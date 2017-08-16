@@ -1,8 +1,5 @@
 package itree.core.weightsim.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -15,13 +12,14 @@ import java.util.concurrent.Executors;
 public class SocketWrapper
 {
     private Socket socket;
+    private boolean isConnected;
     private ServerSocket serverSocket;
     private PrintWriter printWriter;
     private SocketAddress socketAddress;
     private boolean isInitiator;
     private boolean isInitiated;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private Logger logger = LoggerFactory.getLogger(SocketWrapper.class);
+    private LoggerWrapper logger = LoggerWrapperFactory.getLogger(SocketWrapper.class);
 
     public SocketWrapper(boolean isInitiator, InetSocketAddress socketAddress)
     {
@@ -30,14 +28,12 @@ public class SocketWrapper
         if (isInitiator)
         {
             this.socket = new Socket();
-        }
-        else
+        } else
         {
             try
             {
                 this.serverSocket = new ServerSocket(socketAddress.getPort());
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 logger.error("Failed to initialize server socket", e);
             }
@@ -48,15 +44,19 @@ public class SocketWrapper
     {
         if (isInitiator)
         {
-            if (!this.socket.isConnected())
+            if (!isConnected)
             {
+                if (this.socket != null)
+                {
+                    this.socket = new Socket();
+                }
                 this.socket.connect(socketAddress);
+                isConnected = true;
                 this.printWriter = new PrintWriter(socket.getOutputStream(), true);
             }
-        }
-        else
+        } else
         {
-            if (!isInitiated || (this.socket != null && this.socket.isClosed()))
+            if (!isInitiated || (this.socket != null && !isConnected))
             {
                 isInitiated = true;
                 executorService.submit(new Runnable()
@@ -68,8 +68,8 @@ public class SocketWrapper
                         {
                             //listen for connection
                             socket = serverSocket.accept();
-                        }
-                        catch (IOException e)
+                            isConnected = true;
+                        } catch (IOException e)
                         {
                             logger.error("Failed to initialize server socket", e);
                         }
@@ -86,6 +86,10 @@ public class SocketWrapper
         if (this.socket != null)
         {
             printWriter.print(message.toString());
+            if (printWriter.checkError()) {
+                isConnected = false;
+            }
+            printWriter.flush();
         }
     }
 

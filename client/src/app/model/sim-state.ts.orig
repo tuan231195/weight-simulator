@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+/**
+ * Created by tuannguyen on 29/7/17.
+ */
+=======
+import {VehicleState} from './vehicle-state';
+export class SimState {
+    vehicleStates: VehicleState[];
+    currentVehiclePosition: number;
+    numSteps: number;
+    plate: number;
+    step: number;
+    stage: number;
+}
+>>>>>>> 2b44fbf9802360cda5f9fd81c1d914a796799bfc

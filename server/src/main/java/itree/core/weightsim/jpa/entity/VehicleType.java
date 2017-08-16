@@ -31,18 +31,27 @@ public class VehicleType implements Serializable
     @Column(name = "GROSS")
     private Double gross;
 
+    @JsonProperty("axle1")
     @Column(name = "AXLEGROUP_MASS_1")
     private Long axleGroupMass1;
 
+    @JsonProperty("axle2")
     @Column(name = "AXLEGROUP_MASS_2")
     private Long axleGroupMass2;
 
+    @JsonProperty("axle3")
     @Column(name = "AXLEGROUP_MASS_3")
     private Long axleGroupMass3;
 
+    @JsonProperty("axle4")
     @Column(name = "AXLEGROUP_MASS_4")
     private Long axleGroupMass4;
 
+    @JsonProperty("numAxleGroups")
+    @Column(name = "AXLEGROUP_NUM")
+    private Integer axleGroupNum;
+
+    @JsonProperty("axle5")
     @Column(name = "AXLEGROUP_MASS_5")
     private Long axleGroupMass5;
 

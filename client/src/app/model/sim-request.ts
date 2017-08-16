@@ -1,4 +1,6 @@
-export class VehicleSim
-{
-
+export class SimRequest {
+    version: number;
+    numPlate: number;
+    sessionId: string;
+    code: string;
 }

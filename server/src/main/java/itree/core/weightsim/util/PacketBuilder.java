@@ -5,8 +5,9 @@ import itree.core.weightsim.model.GedgeStruct;
 
 public class PacketBuilder
 {
-    public static GedgeStruct newGedgeStruct(boolean stabled, double weight)
+    public static GedgeStruct newGedgeStruct(boolean stabled, double weightInKilos)
     {
+        double weight = weightInKilos/1000.0;
         String weightStr = String.format("%07.2f", weight);
         char sign = (weight < 0) ? '-' : '+';
         char constS, constT;

@@ -23,21 +23,23 @@ public class WeightConfigDao extends BaseDao
         {
             transaction.begin();
             List result = entityManager.createQuery("SELECT " +
-                    "v.code, v.typeName, " +
-                    "v.gross, vw.plateNum, vw.step, v.axleGroupMass1 + 2 * v.grpMassTol1, " +
-                    "v.axleGroupMass2 + 2 * v.grpMassTol2, v.axleGroupMass3 + 2 * v.grpMassTol3, " +
-                    "v.axleGroupMass4 + 2 * v.grpMassTol4, v.axleGroupMass5 + 2 * v.grpMassTol5," +
+                    "vt.code, vt.typeName, " +
+                    "vt.gross, vw.plateNum, vw.step, v.axle1 + 2 * vt.grpMassTol1, " +
+                    "v.axle2 + 2 * vt.grpMassTol2, v.axle3 + 2 * vt.grpMassTol3, " +
+                    "v.axle4 + 2 * vt.grpMassTol4, v.axle5 + 2 * vt.grpMassTol5," +
                     "vw.scale1Active, vw.scale2Active, vw.scale3Active, vw.scale4Active, vw.scale5Active," +
                     "vw.scaleJoin12, vw.scaleJoin23, vw.scaleJoin34, vw.scaleJoin45 " +
-                    "FROM VehicleType v JOIN v.weightInstructions vw " +
-                    "WHERE v.code = :code AND vw.plateNum = :plateNum")
+                    "FROM Vehicle v JOIN v.vehicleType vt JOIN vt.weightInstructions vw " +
+                    "WHERE v.vehicleCode = :code AND vw.plateNum = :plateNum")
                     .setParameter("code", code).setParameter("plateNum", plateNum)
                     .getResultList();
             weightConfigList = toEntityList(result);
-        } catch (RuntimeException e)
+        }
+        catch (RuntimeException e)
         {
             handleException(e, transaction);
-        } finally
+        }
+        finally
         {
             close(entityManager);
         }
@@ -62,6 +64,10 @@ public class WeightConfigDao extends BaseDao
                     int startScaleIndex = 5;
                     int startActiveIndex = 10;
                     scales[i] = toLong(tuple[startScaleIndex + i]);
+                    if (scales[i] == null)
+                    {
+                        scales[i] = 0L;
+                    }
                     scaleActive[i] = (Character) tuple[startActiveIndex + i] == 'Y';
                 }
 

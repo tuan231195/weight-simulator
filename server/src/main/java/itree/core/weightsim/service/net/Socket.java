@@ -37,7 +37,7 @@ class Socket
             logService.log(idx, message.toString());
         } catch (IOException e)
         {
-            logger.error("Failed to connect to " + hostName + " on port " + port, e);
+            logger.error("Failed to connect to " + hostName + " on port " + port + ". Reason: " + e.getLocalizedMessage());
         } catch (Exception e)
         {
             logger.error("Failed to send to server on port: " + port, e);
@@ -46,7 +46,7 @@ class Socket
 
     void cleanup()
     {
-        logger.debug("Cleaning socket client at port " + port);
+        logger.debug(String.format("Cleaning socket client at port %d", port));
         try
         {
             socketWrapper.close();

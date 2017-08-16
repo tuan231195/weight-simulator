@@ -34,14 +34,14 @@ public class TestWeightCalculator
     {
         weightConfig = new WeightConfig(CODE, "Testing", 20.0, 2, 2, new Long[]{10L, 10L}, new Boolean[]{true, true}, new Boolean[]{false});
         weightCalculator = new WeightCalculator(simConfig);
-        when(simConfig.getOverweight()).thenReturn(new boolean[]{false, false});
+        when(simConfig.getOverweight()).thenReturn(new Boolean[]{false, false});
     }
 
     @Test
     public void testOverweight()
     {
         reset(simConfig);
-        when(simConfig.getOverweight()).thenReturn(new boolean[]{true, false});
+        when(simConfig.getOverweight()).thenReturn(new Boolean[]{true, false});
         List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertEquals(weights.get(0), 11.0);
         assertEquals(weights.get(1), 10.0);
@@ -71,7 +71,7 @@ public class TestWeightCalculator
         weightConfig.setScaleActive(new Boolean[]{true, false});
         weightConfig.setScaleJoin(new Boolean[]{true});
         reset(simConfig);
-        when(simConfig.getOverweight()).thenReturn(new boolean[]{true, true});
+        when(simConfig.getOverweight()).thenReturn(new Boolean[]{true, true});
         List<Double> weights = weightCalculator.getWeight(weightConfig);
         assertTrue(Double.compare(weights.get(0), 5.5) == 0);
         assertTrue(Double.compare(weights.get(1), 10.989) == 0);

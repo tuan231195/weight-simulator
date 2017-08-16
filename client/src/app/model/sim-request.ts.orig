@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+export class VehicleSim
+{
+
+=======
+export class SimRequest {
+    version: number;
+    numPlate: number;
+    sessionId: string;
+    code: string;
+>>>>>>> 2b44fbf9802360cda5f9fd81c1d914a796799bfc
+}

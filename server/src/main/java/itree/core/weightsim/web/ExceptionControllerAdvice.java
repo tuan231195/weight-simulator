@@ -1,4 +1,4 @@
-package itree.core.weightsim.controllers;
+package itree.core.weightsim.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

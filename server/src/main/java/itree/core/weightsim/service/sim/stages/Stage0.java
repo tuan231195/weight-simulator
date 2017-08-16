@@ -1,9 +1,9 @@
 package itree.core.weightsim.service.sim.stages;
 
 import itree.core.weightsim.jpa.entity.WeightConfig;
-import itree.core.weightsim.model.GedgeStruct;
 import itree.core.weightsim.model.PlateConfig;
 import itree.core.weightsim.model.SimConfig;
+import itree.core.weightsim.model.StageState;
 import itree.core.weightsim.service.net.SocketGroup;
 import itree.core.weightsim.service.sim.SimThread;
 import itree.core.weightsim.util.PacketBuilder;
@@ -14,16 +14,20 @@ public class Stage0 implements Stage
     private SimConfig simConfig;
     private int numSentPackets;
     private SocketGroup socketGroup;
+    private double[] values;
+    private PlateConfig plateConfig;
 
-    public Stage0(SimThread simThread, SimConfig simConfig, SocketGroup socketGroup)
+    public Stage0(SimThread simThread, SocketGroup socketGroup)
     {
         this.simThread = simThread;
-        this.simConfig = simConfig;
+        this.simConfig = simThread.getSimConfig();
         this.socketGroup = socketGroup;
+        this.plateConfig = simThread.getPlateConfig();
+        values = new double[plateConfig.getNumPlates()];
     }
 
     @Override
-    public void run(PlateConfig plateConfig, WeightConfig weightConfig) throws InterruptedException
+    public StageState run(WeightConfig weightConfig)
     {
         if (numSentPackets < simConfig.getNumInitPackets())
         {
@@ -34,9 +38,20 @@ public class Stage0 implements Stage
             numSentPackets++;
             if (numSentPackets == simConfig.getNumInitPackets())
             {
-                numSentPackets = 0;
                 simThread.nextStage();
+                reset();
             }
         }
+        return new StageState(values, getCurrentVehicleOffset());
+    }
+
+    private void reset()
+    {
+        numSentPackets = 0;
+    }
+
+    private double getCurrentVehicleOffset()
+    {
+        return 0;
     }
 }

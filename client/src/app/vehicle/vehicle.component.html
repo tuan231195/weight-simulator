@@ -1,0 +1,75 @@
+<main>
+    <div class="row">
+        <div class="side-bar col-sm-3">
+            <md-card>
+                <md-card-content>
+                    <div class="pl-3 pt-4">
+                        <md-select class="vehicle-type-list" id="vehicle-list" placeholder="Vehicle type"
+                                   [(ngModel)]="selectedVehicleType" (change)="selectVehicleType()">
+                            <md-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">{{vehicleType.code}}</md-option>
+                        </md-select>
+                    </div>
+                    <md-nav-list *ngIf="selectedVehicleType">
+                        <md-list-item class="vehicle" *ngFor="let vehicle of vehicles" (click)="selectVehicle(vehicle)"
+                                      [class.selected]="selectedVehicle != null && selectedVehicle.code == vehicle.code">
+                            <h4 md-line>
+                                {{vehicle.code}}
+                            </h4>
+                            <span md-line> {{vehicle.name}} </span>
+                        </md-list-item>
+                    </md-nav-list>
+                    <div class="btn-panel mt-1 float-right" *ngIf="selectedVehicleType">
+                        <button md-raised-button color="accent" class="mr-1" *ngIf="selectedVehicleType" (click)="newVehicle()">New</button>
+                        <button md-raised-button color="warn" *ngIf="selectedVehicle && this.vehicles.length > 1" (click)="deleteVehicle()">Delete</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div class="vehicle-content col-sm-8" *ngIf="selectedVehicle">
+            <md-card>
+                <md-card-content>
+                    <h3>{{selectedVehicle.type}} - {{selectedVehicle.name}}</h3>
+                    <form [formGroup] = "vehicleForm">
+                        <div class="form pl-3">
+                            <div class="row">
+                                <md-input-container>
+                                    <input formControlName="id" mdInput type="number" placeholder="ID" maxlength="1" value="{{selectedVehicle.id}}">
+                                </md-input-container>
+                            </div>
+
+                            <div class="row">
+                                <md-input-container>
+                                    <input formControlName = "name" mdInput type="text" placeholder="Vehicle Name" [(ngModel)]="selectedVehicle.name">
+                                </md-input-container>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2 pl-0" *ngIf="selectedVehicleType.numAxleGroups >= 1">
+                                    <vr-number-input formControlName = "axle1" [placeholder]="'Axle 1'" maxlength="7" [(ngModel)]="selectedVehicle.axle1"></vr-number-input>
+                                </div>
+                                <div class="col-sm-2" *ngIf="selectedVehicleType.numAxleGroups >= 2">
+                                    <vr-number-input formControlName = "axle2" [placeholder]="'Axle 2'" maxlength="7" [(ngModel)]="selectedVehicle.axle2"></vr-number-input>
+                                </div>
+                                <div class="col-sm-2" *ngIf="selectedVehicleType.numAxleGroups >= 3">
+                                    <vr-number-input formControlName = "axle3" [placeholder]="'Axle 3'" maxlength="7" [(ngModel)]="selectedVehicle.axle3"></vr-number-input>
+                                </div>
+                                <div class="col-sm-2" *ngIf="selectedVehicleType.numAxleGroups >= 4">
+                                    <vr-number-input formControlName = "axle4" [placeholder]="'Axle 4'" maxlength="7" [(ngModel)]="selectedVehicle.axle4"></vr-number-input>
+                                </div>
+                                <div class="col-sm-2" *ngIf="selectedVehicleType.numAxleGroups >= 5">
+                                    <vr-number-input formControlName = "axle5" [placeholder]="'Axle 5'" maxlength="7" [(ngModel)]="selectedVehicle.axle5"></vr-number-input>
+                                </div>
+                            </div>
+                            <div class="btn-panel mt-1 float-right" *ngIf="selectedVehicleType">
+                                <button md-raised-button color="accent" [disabled] = "vehicleForm.invalid" class="mr-1" (click)="createOrSave()">{{create? 'Create' : 'Save'}}</button>
+                            </div>
+                            <div class = "clearfix"></div>
+                        </div>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+
+</main>

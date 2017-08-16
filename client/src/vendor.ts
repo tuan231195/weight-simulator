@@ -1,13 +1,13 @@
 import '@angular/platform-browser';
+import 'jquery';
 import '@angular/platform-browser-dynamic';
 import '@angular/core';
 import '@angular/common';
 import '@angular/http';
 import '@angular/router';
-import 'stompjs';
-import 'stompjs/lib/stomp.js';
 import 'angular2-logger/core';
 import '@angular/material';
 import '@angular/platform-browser/animations';
 import 'hammerjs';
 import 'ng2-toastr/ng2-toastr';
+import 'uuid';

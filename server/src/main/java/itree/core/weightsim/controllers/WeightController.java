@@ -1,18 +1,18 @@
 package itree.core.weightsim.controllers;
 
-import itree.core.weightsim.jpa.dao.VehicleTypeDao;
-import itree.core.weightsim.jpa.entity.VehicleType;
 import itree.core.weightsim.model.PlateConfig;
 import itree.core.weightsim.model.SimConfig;
 import itree.core.weightsim.model.SimRequest;
+import itree.core.weightsim.model.SimState;
 import itree.core.weightsim.service.sim.SimService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import itree.core.weightsim.util.LoggerWrapper;
+import itree.core.weightsim.util.LoggerWrapperFactory;
+import itree.core.weightsim.web.PlateNotFoundException;
+import itree.core.weightsim.web.SessionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.sql.SQLException;
@@ -20,18 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class WeightService
+public class WeightController
 {
-    private final VehicleTypeDao vehicleTypeDao;
+    public static final String RECEIVED_MESSAGE = "Received request: %s";
     private final SimConfig simConfig;
     private final SimService simService;
     private List<PlateConfig> plateConfigs;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private LoggerWrapper logger = LoggerWrapperFactory.getLogger(this.getClass());
 
     @Autowired
-    public WeightService(VehicleTypeDao vehicleTypeDao, SimConfig simConfig, SimService simService)
-    {
-        this.vehicleTypeDao = vehicleTypeDao;
+    public WeightController(SimConfig simConfig, SimService simService)
+      {
         this.simConfig = simConfig;
         this.simService = simService;
     }
@@ -56,10 +55,11 @@ public class WeightService
     }
 
 
-    @RequestMapping("/simulate")
+    @RequestMapping(value = "/api/simulate", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public void simulate(@RequestBody SimRequest simRequest) throws PlateNotFoundException, SQLException
     {
-        logger.debug("Received request: " + simRequest);
+        logger.debug(String.format(RECEIVED_MESSAGE, simRequest));
         PlateConfig foundPlateConfig = null;
         for (PlateConfig plateConfig : plateConfigs)
         {
@@ -70,45 +70,40 @@ public class WeightService
         }
         if (foundPlateConfig == null)
         {
-            logger.error("Cannot find plate version: " + simRequest.getVersion());
+            logger.error(String.format("Cannot find plate version: %d", simRequest.getVersion()));
             throw new PlateNotFoundException(simRequest.getVersion());
-
         }
         simService.simulate(simRequest.getSessionId(), foundPlateConfig, simRequest.getCode());
     }
 
-    @RequestMapping("/stop")
-    public void stop(@RequestBody SimRequest simRequest)
+
+    @RequestMapping(value = "/api/stop", method = RequestMethod.POST)
+    public void stop(@RequestBody SimRequest simRequest) throws SessionNotFoundException
     {
-        logger.debug("Received request: " + simRequest);
+        logger.debug(String.format(RECEIVED_MESSAGE, simRequest));
         simService.stop(simRequest.getSessionId());
     }
 
-    @RequestMapping("/state")
-    public void getState(@RequestBody SimRequest simRequest)
+
+    @RequestMapping("/api/state/{sessionId}")
+    public SimState getState(@PathVariable("sessionId") String sessionId) throws SessionNotFoundException
     {
-        logger.debug("Received request: " + simRequest);
-        simService.getState(simRequest.getSessionId());
+
+        logger.debug("Getting state for session: " + sessionId);
+        return simService.getState(sessionId);
     }
 
-    @RequestMapping("/next")
-    public void next(@RequestBody SimRequest simRequest)
+    @RequestMapping(value = "/api/next", method = RequestMethod.POST)
+    public void next(@RequestBody SimRequest simRequest) throws SessionNotFoundException
     {
-        logger.debug("Received request: " + simRequest);
+        logger.debug(String.format(RECEIVED_MESSAGE, simRequest));
         simService.nextStep(simRequest.getSessionId());
     }
 
-    @RequestMapping("/api/plates")
+    @RequestMapping(value = "/api/plates")
     public List<PlateConfig> findAllPlates()
     {
         logger.debug("Find all plate configurations");
         return plateConfigs;
-    }
-
-    @RequestMapping("/api/plates/{plate}/vtypes")
-    public List<VehicleType> findVehicleTypes(@PathVariable("plate") int plateVersion) throws SQLException
-    {
-        logger.debug("Find all vehicle types for plate: " + plateVersion);
-        return vehicleTypeDao.findAllForPlate(plateVersion);
     }
 }

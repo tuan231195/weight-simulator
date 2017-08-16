@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ public class LogService
     private PrintWriter[] printWriters;
     private boolean logInit;
     private SimConfig simConfig;
+    private File logDirectory;
 
     @Autowired
     public LogService(SimConfig simConfig)
@@ -30,7 +32,7 @@ public class LogService
     @PostConstruct
     public void init()
     {
-        File logDirectory = new File("logs");
+        logDirectory = new File("logs");
         try
         {
             if (!logDirectory.exists())
@@ -43,7 +45,7 @@ public class LogService
             }
             for (int i = 0; i < simConfig.getNumPorts(); i++)
             {
-                int port = simConfig.getStartPort();
+                int port = simConfig.getStartPort() + i;
                 printWriters[i] = new PrintWriter(new FileOutputStream(new File(logDirectory, "packets-" + port + ".log"), true));
             }
             logInit = true;
@@ -59,4 +61,19 @@ public class LogService
         printWriters[idx].print(msg);
         printWriters[idx].flush();
     }
+
+    @PreDestroy
+    public void cleanup(){
+        logger.debug("Cleaning the logs directory");
+        File[] files = logDirectory.listFiles();
+        if (files != null)
+        {
+            for (File file: files)
+            {
+                file.delete();
+            }
+            logDirectory.delete();
+        }
+    }
+
 }

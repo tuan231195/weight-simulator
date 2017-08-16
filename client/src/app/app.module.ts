@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {SettingsComponent} from './settings/settings.component';
 import {HomeComponent} from './home/home.component';
-import {StompService} from './websocket.service';
 import {Logger} from 'angular2-logger/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -12,25 +11,32 @@ import {
     MdIconModule,
     MdInputModule,
     MdMenuModule,
-    MdSelectModule, MdSnackBarModule,
+    MdSelectModule,
+    MdSnackBarModule,
     MdTabsModule,
-    MdToolbarModule
+    MdToolbarModule,
+    MdCheckboxModule, MdSidenavModule, MdListModule
 } from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {SettingService} from './services/settings.service';
+import {WeightService} from './services/weight.service';
+import {VehicleComponent} from './vehicle/vehicle.component';
+import {VehicleService} from './services/vehicle.service';
+import {NumberInputComponent} from './widget/number-input.component';
 
 @NgModule({
     imports: [
         BrowserModule, MdToolbarModule, MdSelectModule,
-        FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule,
-        MdIconModule, MdMenuModule, MdButtonModule, MdInputModule,
-        MdSnackBarModule, HttpModule, ToastModule.forRoot()
+        ReactiveFormsModule, FormsModule, MdTabsModule, MdCardModule, BrowserAnimationsModule, MdCardModule,
+        MdIconModule, MdMenuModule, MdButtonModule, MdInputModule, MdListModule,
+        MdSidenavModule, MdSnackBarModule, HttpModule, MdCheckboxModule, ToastModule.forRoot()
     ],
     declarations: [
-        AppComponent, SettingsComponent, HomeComponent
+        AppComponent, SettingsComponent, HomeComponent, VehicleComponent, NumberInputComponent
     ],
-    providers: [StompService, Logger],
+    providers: [Logger, SettingService, WeightService, VehicleService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

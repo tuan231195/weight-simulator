@@ -1,0 +1,20 @@
+<<<<<<< HEAD
+package itree.core.weightsim.controllers;
+=======
+package itree.core.weightsim.web;
+>>>>>>> 2b44fbf9802360cda5f9fd81c1d914a796799bfc
+
+public class SessionNotFoundException extends Exception
+{
+    private String session;
+    public SessionNotFoundException(String session)
+    {
+        super("Session " + session + " cannot be found");
+        this.session = session;
+    }
+
+    public String getSession()
+    {
+        return session;
+    }
+}

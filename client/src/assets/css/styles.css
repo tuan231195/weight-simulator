@@ -5,18 +5,18 @@
 
 body {
     margin: 0;
+    height: 100vh;
     font-family: Roboto, sans-serif;
 }
 
 main {
-    padding: 1em;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 20px;
+    padding: 10px 5px 0;
+    background-color: #eeeeee;
     display: block;
+    height: 100vh;
 }
 
-md-card {
-    max-width: 80%;
-    margin: 2em auto;
-    text-align: center;
+
+.mat-tab-header-pagination {
+    display:none!important;
 }
